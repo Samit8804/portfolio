@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Samit Fartyal - Full Stack Developer | AI Enthusiast | Problem Solver. Professional portfolio showcasing projects, skills, and experience.">
+  <meta name="theme-color" content="#0a0a1a">
+  <title>Samit Fartyal | Full Stack Developer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- ===== LOADER ===== -->
+  <div id="loader" class="loader">
+    <div class="loader-content">
+      <div class="loader-spinner"></div>
+      <div class="loader-text">
+        <span class="gradient-text">Samit</span> Fartyal
+      </div>
+      <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- ===== ANIMATED BACKGROUND ===== -->
+  <div class="bg-wrapper">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <!-- ===== TOAST CONTAINER ===== -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav id="navbar" class="navbar">
+    <div class="nav-container">
+      <a href="#hero" class="nav-logo">
+        <span class="logo-text">Samit</span><span class="logo-dot">.</span>
+      </a>
+
+      <div class="nav-links" id="navLinks">
+        <a href="#hero" class="nav-link active" data-section="hero">Home</a>
+        <a href="#about" class="nav-link" data-section="about">About</a>
+        <a href="#projects" class="nav-link" data-section="projects">Projects</a>
+        <a href="#certificates" class="nav-link" data-section="certificates">Certificates</a>
+        <a href="#contact" class="nav-link" data-section="contact">Contact</a>
+      </div>
+
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="moon" class="theme-icon-dark"></i>
+          <i data-lucide="sun" class="theme-icon-light"></i>
+        </button>
+        <a href="#contact" class="nav-cta">Let's Talk</a>
+        <button class="nav-menu-btn" id="menuBtn" aria-label="Toggle menu">
+          <i data-lucide="menu" class="menu-open-icon"></i>
+          <i data-lucide="x" class="menu-close-icon"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#hero" class="mobile-link">Home</a>
+      <a href="#about" class="mobile-link">About</a>
+      <a href="#projects" class="mobile-link">Projects</a>
+      <a href="#certificates" class="mobile-link">Certificates</a>
+      <a href="#contact" class="mobile-link">Contact</a>
+      <a href="admin/login.html" class="mobile-link mobile-admin">Admin</a>
+    </div>
+  </nav>
+
+  <!-- ===== HERO SECTION ===== -->
+  <section id="hero" class="hero-section">
+    <div class="hero-container">
+      <div class="hero-content" data-animate="fade-right">
+        <div class="hero-badge">
+          <span class="badge-dot"></span>
+          <span>Available for opportunities</span>
+        </div>
+
+        <p class="hero-greeting">Hello, I'm</p>
+
+        <h1 class="hero-name">
+          Samit <span class="gradient-text">Fartyal</span>
+        </h1>
+
+        <div class="hero-role">
+          <span class="role-line"></span>
+          <span id="typingText" class="typing-text"></span>
+          <span class="typing-cursor">|</span>
+        </div>
+
+        <p class="hero-description">
+          Building impactful digital solutions with clean code and creative thinking.
+          Turning complex problems into elegant, user-friendly applications.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#projects" class="btn btn-primary">
+            <i data-lucide="folder"></i>
+            View Projects
+          </a>
+          <button id="downloadResumeBtn" class="btn btn-secondary">
+            <i data-lucide="download"></i>
+            Download Resume
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="stat-item">
+            <span class="stat-value">2+</span>
+            <span class="stat-label">Years Exp</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">10+</span>
+            <span class="stat-label">Projects</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-value">15+</span>
+            <span class="stat-label">Tech Stack</span>
+          </div>
+        </div>
+
+        <div class="hero-socials">
+          <a href="https://github.com/samitfartyal" target="_blank" class="social-link" aria-label="GitHub">
+            <i data-lucide="github"></i>
+          </a>
+          <a href="https://linkedin.com/in/samitfartyal" target="_blank" class="social-link" aria-label="LinkedIn">
+            <i data-lucide="linkedin"></i>
+          </a>
+          <a href="mailto:samitfartyal34@gmail.com" class="social-link" aria-label="Email">
+            <i data-lucide="mail"></i>
+          </a>
+          <a href="https://twitter.com/samitfartyal" target="_blank" class="social-link" aria-label="Twitter">
+            <i data-lucide="twitter"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-image-wrapper" data-animate="fade-left">
+        <div class="hero-image-container">
+          <div class="hero-image-glow"></div>
+          <div class="hero-image-ring"></div>
+          <div class="hero-image-ring ring-2"></div>
+          <div class="hero-image-dots"></div>
+          <div class="hero-image-bg-blur"></div>
+          <img src="images/profile.png" alt="Samit Fartyal" class="hero-image" id="heroImage" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="hero-image-placeholder" style="display:none;">
+            <i data-lucide="user" style="width:80px;height:80px;opacity:0.3;"></i>
+          </div>
+        </div>
+
+        <div class="hero-float-card card-edu" data-animate="fade-up" style="animation-delay: 0.8s;">
+          <div class="float-card-icon blue">
+            <i data-lucide="graduation-cap"></i>
+          </div>
+          <div>
+            <strong>SCRIET</strong>
+            <span>BSc CS (Hons) 2022-26</span>
+          </div>
+        </div>
+
+        <div class="hero-float-card card-status" data-animate="fade-up" style="animation-delay: 1s;">
+          <div class="float-card-icon purple">
+            <i data-lucide="code-2"></i>
+          </div>
+          <span>Problem Solver</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-scroll-indicator">
+      <div class="scroll-mouse">
+        <div class="scroll-wheel"></div>
+      </div>
+      <span>Scroll to explore</span>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT SECTION ===== -->
+  <section id="about" class="section about-section">
+    <div class="section-container">
+      <div class="section-header" data-animate="fade-up">
+        <span class="section-tag">About Me</span>
+        <h2 class="section-title">Get to <span class="gradient-text">Know Me</span></h2>
+        <p class="section-subtitle">A passionate developer building digital experiences that make a difference.</p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Left Column - Cards -->
+        <div class="about-cards" data-animate="fade-right">
+          <div class="glass-card">
+            <div class="card-icon blue">
+              <i data-lucide="user"></i>
+            </div>
+            <h3>Who I Am</h3>
+            <p>I'm Samit Fartyal, a Full Stack Developer with a strong interest in AI and problem-solving. I love building clean, efficient applications that solve real-world problems.</p>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon purple">
+              <i data-lucide="graduation-cap"></i>
+            </div>
+            <h3>Education</h3>
+            <div class="edu-item">
+              <div class="edu-header">
+                <strong>SCRIET</strong>
+                <span class="edu-year">2022 - 2026</span>
+              </div>
+              <p>BSc Computer Science (Hons)</p>
+              <div class="edu-tags">
+                <span class="tag">Full Stack</span>
+                <span class="tag">AI/ML</span>
+                <span class="tag">Problem Solving</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card">
+            <div class="card-icon emerald">
+              <i data-lucide="globe"></i>
+            </div>
+            <h3>Interests</h3>
+            <div class="interest-tags">
+              <span class="tag">Web Development</span>
+              <span class="tag">AI/ML</span>
+              <span class="tag">Open Source</span>
+              <span class="tag">Cloud Computing</span>
+              <span class="tag">UI/UX Design</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column - Skills -->
+        <div class="about-skills" data-animate="fade-left">
+          <div class="glass-card skills-card">
+            <div class="card-icon blue">
+              <i data-lucide="monitor"></i>
+            </div>
+            <h3>Technical Skills</h3>
+
+            <div class="skill-category">
+              <h4><span class="skill-icon">&#127912;</span> Frontend</h4>
+              <div class="skills-grid">
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>React</span><span class="skill-pct">90%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>JavaScript</span><span class="skill-pct">85%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>TypeScript</span><span class="skill-pct">75%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Tailwind CSS</span><span class="skill-pct">90%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h4><span class="skill-icon">&#9881;&#65039;</span> Backend</h4>
+              <div class="skills-grid">
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Node.js</span><span class="skill-pct">85%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Python</span><span class="skill-pct">80%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Express</span><span class="skill-pct">85%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>MongoDB</span><span class="skill-pct">75%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="skill-category">
+              <h4><span class="skill-icon">&#128295;</span> Tools</h4>
+              <div class="skills-grid">
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Git</span><span class="skill-pct">85%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Docker</span><span class="skill-pct">70%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>AWS</span><span class="skill-pct">65%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="65"></div></div>
+                </div>
+                <div class="skill-item">
+                  <div class="skill-header">
+                    <span>Figma</span><span class="skill-pct">70%</span>
+                  </div>
+                  <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== PROJECTS SECTION ===== -->
+  <section id="projects" class="section projects-section">
+    <div class="section-container">
+      <div class="section-header" data-animate="fade-up">
+        <span class="section-tag">Portfolio</span>
+        <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
+        <p class="section-subtitle">A collection of projects that showcase my skills and passion for building great software.</p>
+      </div>
+
+      <div class="projects-toolbar" data-animate="fade-up">
+        <div class="filter-tabs">
+          <button class="filter-tab active" data-filter="All">All</button>
+          <button class="filter-tab" data-filter="Web">Web</button>
+          <button class="filter-tab" data-filter="AI">AI</button>
+          <button class="filter-tab" data-filter="Backend">Backend</button>
+        </div>
+        <div class="search-box">
+          <i data-lucide="search"></i>
+          <input type="text" id="projectSearch" placeholder="Search projects...">
+        </div>
+      </div>
+
+      <div id="projectsGrid" class="projects-grid">
+        <!-- Projects loaded dynamically -->
+        <div class="loading-skeleton">
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+          <div class="skeleton-card"></div>
+        </div>
+      </div>
+
+      <div id="projectsPagination" class="pagination"></div>
+    </div>
+  </section>
+
+  <!-- ===== CERTIFICATES SECTION ===== -->
+  <section id="certificates" class="section certificates-section">
+    <div class="section-container">
+      <div class="section-header" data-animate="fade-up">
+        <span class="section-tag">Achievements</span>
+        <h2 class="section-title">My <span class="gradient-text">Certificates</span></h2>
+        <p class="section-subtitle">Professional certifications and achievements that validate my skills.</p>
+      </div>
+
+      <div id="certificatesGrid" class="certificates-grid" data-animate="fade-up">
+        <!-- Certificates loaded dynamically -->
+        <div class="empty-state" id="certsEmpty">
+          <i data-lucide="award"></i>
+          <p>No certificates yet.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT SECTION ===== -->
+  <section id="contact" class="section contact-section">
+    <div class="section-container">
+      <div class="section-header" data-animate="fade-up">
+        <span class="section-tag">Contact</span>
+        <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+        <p class="section-subtitle">Have a project in mind or want to collaborate? I'd love to hear from you.</p>
+      </div>
+
+      <div class="contact-grid">
+        <div class="contact-info" data-animate="fade-right">
+          <div class="glass-card contact-info-card">
+            <div class="card-icon blue">
+              <i data-lucide="mail"></i>
+            </div>
+            <div>
+              <h3>Email</h3>
+              <a href="mailto:samitfartyal34@gmail.com">samitfartyal34@gmail.com</a>
+            </div>
+          </div>
+
+          <div class="glass-card contact-info-card">
+            <div class="card-icon emerald">
+              <i data-lucide="map-pin"></i>
+            </div>
+            <div>
+              <h3>Location</h3>
+              <p>Uttar Pradesh, India</p>
+            </div>
+          </div>
+
+          <div class="glass-card contact-info-card">
+            <div class="card-icon purple">
+              <i data-lucide="share-2"></i>
+            </div>
+            <div>
+              <h3>Connect With Me</h3>
+              <div class="contact-socials">
+                <a href="https://github.com/samitfartyal" target="_blank" class="social-btn">
+                  <i data-lucide="github"></i>
+                </a>
+                <a href="https://linkedin.com/in/samitfartyal" target="_blank" class="social-btn">
+                  <i data-lucide="linkedin"></i>
+                </a>
+                <a href="https://twitter.com/samitfartyal" target="_blank" class="social-btn">
+                  <i data-lucide="twitter"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card contact-info-card availability-card">
+            <div class="availability-dot"></div>
+            <div>
+              <h3>Availability</h3>
+              <p>Open for freelance & full-time opportunities</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="contact-form-wrapper" data-animate="fade-left">
+          <form id="contactForm" class="glass-card contact-form">
+            <h3>Send a Message</h3>
+            <p class="form-desc">Fill out the form below and I'll get back to you soon.</p>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="contactName">Name *</label>
+                <input type="text" id="contactName" name="name" placeholder="Your name" required>
+                <div class="input-line"></div>
+              </div>
+              <div class="form-group">
+                <label for="contactEmail">Email *</label>
+                <input type="email" id="contactEmail" name="email" placeholder="your@email.com" required>
+                <div class="input-line"></div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactSubject">Subject</label>
+              <input type="text" id="contactSubject" name="subject" placeholder="What's this about?">
+              <div class="input-line"></div>
+            </div>
+
+            <div class="form-group">
+              <label for="contactMessage">Message *</label>
+              <textarea id="contactMessage" name="message" rows="5" placeholder="Tell me about your project or idea..." required></textarea>
+              <div class="input-line"></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-full" id="contactBtn">
+              <i data-lucide="send"></i>
+              <span>Send Message</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <a href="#hero" class="footer-logo">
+          <span class="logo-text">Samit</span><span class="logo-dot">.</span>
+        </a>
+        <p class="footer-tagline">Building the future, one line of code at a time.</p>
+      </div>
+
+      <div class="footer-links">
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </div>
+
+      <div class="footer-socials">
+        <a href="https://github.com/samitfartyal" target="_blank" aria-label="GitHub"><i data-lucide="github"></i></a>
+        <a href="https://linkedin.com/in/samitfartyal" target="_blank" aria-label="LinkedIn"><i data-lucide="linkedin"></i></a>
+        <a href="https://twitter.com/samitfartyal" target="_blank" aria-label="Twitter"><i data-lucide="twitter"></i></a>
+        <a href="mailto:samitfartyal34@gmail.com" aria-label="Email"><i data-lucide="mail"></i></a>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2026 Samit Fartyal. All rights reserved.</p>
+        <a href="admin/login.html" class="admin-link">Admin</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ===== CERTIFICATE MODAL ===== -->
+  <div id="certModal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="certModalClose">
+        <i data-lucide="x"></i>
+      </button>
+      <img id="certModalImage" src="" alt="Certificate">
+      <div class="modal-info">
+        <h3 id="certModalTitle"></h3>
+        <p id="certModalIssuer"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== PROJECT DETAIL MODAL ===== -->
+  <div id="projectModal" class="modal">
+    <div class="modal-backdrop"></div>
+    <div class="modal-content modal-project">
+      <button class="modal-close" id="projectModalClose">
+        <i data-lucide="x"></i>
+      </button>
+      <div class="project-modal-body" id="projectModalBody"></div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+</body>
+</html>

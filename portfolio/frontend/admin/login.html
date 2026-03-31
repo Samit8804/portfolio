@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login | Samit Fartyal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <link rel="stylesheet" href="../css/style.css">
+  <style>
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      position: relative;
+      z-index: 1;
+    }
+    .login-card {
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+    }
+    .login-header {
+      text-align: center;
+      margin-bottom: 32px;
+    }
+    .login-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: rgba(59, 130, 246, 0.1);
+      border: 1px solid rgba(59, 130, 246, 0.15);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px;
+      color: #60a5fa;
+    }
+    .login-icon svg { width: 28px; height: 28px; }
+    .login-header h2 {
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+    .login-header p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+    .login-error {
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: rgba(239, 68, 68, 0.1);
+      border: 1px solid rgba(239, 68, 68, 0.15);
+      color: #fca5a5;
+      font-size: 0.8125rem;
+      margin-bottom: 16px;
+      display: none;
+    }
+    .login-error.show { display: block; }
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 24px;
+      text-align: center;
+      width: 100%;
+      justify-content: center;
+      transition: color var(--transition-base);
+    }
+    .back-link:hover { color: var(--text-primary); }
+    .back-link svg { width: 16px; height: 16px; }
+  </style>
+</head>
+<body>
+  <div class="bg-wrapper">
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-grid"></div>
+  </div>
+
+  <div id="toast-container" class="toast-container"></div>
+
+  <div class="login-page">
+    <div class="glass-card login-card">
+      <div class="login-header">
+        <div class="login-icon">
+          <i data-lucide="shield"></i>
+        </div>
+        <h2>Admin <span class="gradient-text">Login</span></h2>
+        <p>Access your dashboard</p>
+      </div>
+
+      <div class="login-error" id="loginError"></div>
+
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="samitfartyal@gmail.com" required>
+          <div class="input-line"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" placeholder="••••••" required>
+          <div class="input-line"></div>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-full" id="loginBtn">
+          <i data-lucide="log-in"></i>
+          <span>Sign In</span>
+        </button>
+      </form>
+
+      <a href="../index.html" class="back-link">
+        <i data-lucide="arrow-left"></i>
+        Back to Portfolio
+      </a>
+    </div>
+  </div>
+
+  <script>
+    const API_URL = '';
+
+    // Check if already logged in
+    if (localStorage.getItem('adminToken')) {
+      window.location.href = 'dashboard.html';
+    }
+
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const errorEl = document.getElementById('loginError');
+      const btn = document.getElementById('loginBtn');
+
+      errorEl.classList.remove('show');
+      btn.disabled = true;
+      btn.innerHTML = '<span>Signing in...</span>';
+
+      try {
+        const res = await fetch(`${API_URL}/api/admin/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (data.success) {
+          localStorage.setItem('adminToken', data.token);
+          localStorage.setItem('adminName', data.admin.name);
+          window.location.href = 'dashboard.html';
+        } else {
+          errorEl.textContent = data.message || 'Login failed';
+          errorEl.classList.add('show');
+        }
+      } catch (err) {
+        errorEl.textContent = 'Network error. Is the server running?';
+        errorEl.classList.add('show');
+      }
+
+      btn.disabled = false;
+      btn.innerHTML = '<i data-lucide="log-in"></i> <span>Sign In</span>';
+      lucide.createIcons();
+    });
+
+    lucide.createIcons();
+  </script>
+</body>
+</html>
