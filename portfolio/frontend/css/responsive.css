@@ -46,6 +46,8 @@
 
   .nav-links { display: none; }
   .nav-cta { display: none; }
+  .nav-admin-btn span { display: none; }
+  .nav-admin-btn { padding: 8px 10px; }
   .nav-menu-btn { display: flex; }
   .mobile-menu { display: flex; }
 
