@@ -15,13 +15,24 @@ const resumeRoutes = require('./routes/resume');
 
 const app = express();
 
-// Connect to MongoDB
-connectDB();
+// Connect to MongoDB (lazy connect for serverless)
+let dbConnected = false;
+const ensureDB = async () => {
+  if (!dbConnected) {
+    dbConnected = await connectDB();
+  }
+};
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Ensure DB connection before API routes
+app.use('/api', async (req, res, next) => {
+  await ensureDB();
+  next();
+});
 
 // Rate limiting for contact form
 const contactLimiter = rateLimit({
@@ -63,8 +74,13 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 5000;
+// Only listen when running locally (not on Vercel)
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
+}
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
-});
+// Export for Vercel serverless
+module.exports = app;
