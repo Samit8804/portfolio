@@ -3,8 +3,17 @@ const path = require('path');
 const cors = require('cors');
 const multer = require('multer');
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
 
 try { require('dotenv').config(); } catch(e) {}
+
+// Load models
+const Project = require('../backend/models/Project');
+const Certificate = require('../backend/models/Certificate');
+const Contact = require('../backend/models/Contact');
+const Admin = require('../backend/models/Admin');
+const Resume = require('../backend/models/Resume');
 
 const app = express();
 
@@ -12,18 +21,19 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+const isServerless = process.env.VERCEL === '1' || process.env.RENDER;
+
 // Multer configuration for project images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    // Use /tmp directory on Vercel, otherwise use local uploads folder
-    const uploadPath = process.env.VERCEL 
-      ? path.join('/tmp', 'uploads', 'projects') 
+    const uploadPath = isServerless
+      ? path.join('/tmp', 'uploads', 'projects')
       : path.join(__dirname, '..', 'backend', 'uploads', 'projects');
-    
+
     if (!fs.existsSync(uploadPath)) {
       fs.mkdirSync(uploadPath, { recursive: true });
     }
-    
+
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
@@ -38,14 +48,14 @@ const uploadProjectImages = multer({
     const allowedTypes = /jpeg|jpg|png|webp|gif/;
     const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = allowedTypes.test(file.mimetype);
-    
+
     if (extname && mimetype) {
       cb(null, true);
     } else {
       cb(new Error('Only image files (jpg, png, webp, gif) are allowed'), false);
     }
   },
-  limits: { fileSize: 5 * 1024 * 1024 } // 5MB
+  limits: { fileSize: 5 * 1024 * 1024 }
 }).array('images', 5);
 
 // Lazy DB connection
@@ -57,7 +67,6 @@ async function ensureDB() {
   if (dbError) throw dbError;
 
   try {
-    const mongoose = require('mongoose');
     await mongoose.connect(process.env.MONGODB_URI);
     console.log('MongoDB Connected');
     dbConnected = true;
@@ -89,9 +98,8 @@ const contactLimiter = rateLimit({
   message: { success: false, message: 'Too many attempts. Try again later.' }
 });
 
-// ===== ROUTES =====
+// ===== ADMIN =====
 
-// Admin login
 app.post('/api/admin/login', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -100,10 +108,10 @@ app.post('/api/admin/login', async (req, res) => {
     const admin = await Admin.findOne({ email }).select('+password');
     if (!admin) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
-    const match = await admin.comparePassword(password);
-    if (!match) return res.status(401).json({ success: false, message: 'Invalid credentials' });
+    const isMatch = await admin.comparePassword(password);
+    if (!isMatch) return res.status(401).json({ success: false, message: 'Invalid credentials' });
 
-    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: admin._id }, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXPIRE || '7d' });
     res.json({ success: true, token, admin: { id: admin._id, name: admin.name, email: admin.email } });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -124,7 +132,12 @@ const protect = async (req, res, next) => {
   }
 };
 
-// Projects CRUD
+app.get('/api/admin/me', protect, async (req, res) => {
+  res.json({ success: true, admin: { id: req.admin._id, name: req.admin.name, email: req.admin.email } });
+});
+
+// ===== PROJECTS =====
+
 app.get('/api/projects', async (req, res) => {
   try {
     const { category, search, page = 1, limit = 12 } = req.query;
@@ -140,15 +153,8 @@ app.get('/api/projects', async (req, res) => {
       .sort({ order: -1, createdAt: -1 })
       .skip((page - 1) * limit)
       .limit(parseInt(limit));
-    
-    res.json({ 
-      success: true, 
-      count: projects.length, 
-      total, 
-      totalPages: Math.ceil(total / limit), 
-      currentPage: parseInt(page),
-      projects 
-    });
+
+    res.json({ success: true, count: projects.length, total, totalPages: Math.ceil(total / limit), currentPage: parseInt(page), projects });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -164,42 +170,32 @@ app.get('/api/projects/:id', async (req, res) => {
   }
 });
 
-// CREATE PROJECT WITH IMAGE UPLOAD
 app.post('/api/projects', protect, uploadProjectImages, async (req, res) => {
   try {
     const { title, description, techStack, category, githubUrl, liveUrl, featured, order } = req.body;
-    
-    // Process uploaded images
-    const images = req.files ? req.files.map(file => `/uploads/projects/${file.filename}`) : [];
-    
+    const images = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
+
     const project = await Project.create({
-      title,
-      description,
+      title, description,
       techStack: techStack ? techStack.split(',').map(t => t.trim()) : [],
-      category: category || 'Web',
-      githubUrl,
-      liveUrl,
-      images,
+      category: category || 'Web', githubUrl, liveUrl, images,
       featured: featured === 'true' || featured === true,
       order: order || 0
     });
-    
+
     res.status(201).json({ success: true, project });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// UPDATE PROJECT WITH IMAGE UPLOAD
 app.put('/api/projects/:id', protect, uploadProjectImages, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
-    if (!project) {
-      return res.status(404).json({ success: false, message: 'Project not found' });
-    }
-    
+    if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
+
     const { title, description, techStack, category, githubUrl, liveUrl, featured, order, keepImages } = req.body;
-    
+
     if (title) project.title = title;
     if (description) project.description = description;
     if (techStack) project.techStack = techStack.split(',').map(t => t.trim());
@@ -208,20 +204,15 @@ app.put('/api/projects/:id', protect, uploadProjectImages, async (req, res) => {
     if (liveUrl !== undefined) project.liveUrl = liveUrl;
     if (featured !== undefined) project.featured = featured === 'true' || featured === true;
     if (order !== undefined) project.order = order;
-    
-    // Handle images - keep existing ones if specified, otherwise replace all
-    const newImages = req.files ? req.files.map(file => `/uploads/projects/${file.filename}`) : [];
+
+    const newImages = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
     if (keepImages) {
-      const existingImages = JSON.parse(keepImages);
-      project.images = [...existingImages, ...newImages];
+      project.images = [...JSON.parse(keepImages), ...newImages];
     } else if (newImages.length > 0) {
-      // If new images uploaded, replace all images
       project.images = [...project.images, ...newImages];
     }
-    // If no new images and keepImages not specified, keep existing images
-    
+
     await project.save();
-    
     res.json({ success: true, project });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -231,18 +222,15 @@ app.put('/api/projects/:id', protect, uploadProjectImages, async (req, res) => {
 app.delete('/api/projects/:id', protect, async (req, res) => {
   try {
     const project = await Project.findById(req.params.id);
-    if (!project) {
-      return res.status(404).json({ success: false, message: 'Project not found' });
-    }
-    
-    // Delete associated images
+    if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
+
     project.images.forEach(img => {
-      const filePath = path.join(__dirname, '..', img);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
+      const filePath = isServerless
+        ? path.join('/tmp', img)
+        : path.join(__dirname, '..', 'backend', img);
+      if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
     });
-    
+
     await Project.findByIdAndDelete(req.params.id);
     res.json({ success: true, message: 'Project deleted successfully' });
   } catch (err) {
@@ -250,7 +238,8 @@ app.delete('/api/projects/:id', protect, async (req, res) => {
   }
 });
 
-// Certificates CRUD
+// ===== CERTIFICATES =====
+
 app.get('/api/certificates', async (req, res) => {
   try {
     const certificates = await Certificate.find().sort({ createdAt: -1 });
@@ -262,15 +251,9 @@ app.get('/api/certificates', async (req, res) => {
 
 app.post('/api/certificates', protect, async (req, res) => {
   try {
-    const { title, issuer, date, credentialUrl, image } = req.body;
-    const cert = await Certificate.create({ 
-      title, 
-      issuer, 
-      date: date || Date.now(), 
-      image: image || '', 
-      credentialUrl 
-    });
-    res.status(201).json({ success: true, certificate: cert });
+    const { title, issuer, date, credentialUrl } = req.body;
+    const certificate = await Certificate.create({ title, issuer, date: date || Date.now(), credentialUrl });
+    res.status(201).json({ success: true, certificate });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -279,19 +262,20 @@ app.post('/api/certificates', protect, async (req, res) => {
 app.delete('/api/certificates/:id', protect, async (req, res) => {
   try {
     await Certificate.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Deleted' });
+    res.json({ success: true, message: 'Certificate deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// Contact
+// ===== CONTACT =====
+
 app.post('/api/contact', contactLimiter, async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
     if (!name || !email || !message) return res.status(400).json({ success: false, message: 'Name, email, and message required' });
     const contact = await Contact.create({ name, email, subject: subject || 'No Subject', message });
-    res.status(201).json({ success: true, message: 'Message sent!', contact });
+    res.status(201).json({ success: true, message: 'Message sent successfully!', contact });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
@@ -318,20 +302,25 @@ app.put('/api/contact/:id/read', protect, async (req, res) => {
 app.delete('/api/contact/:id', protect, async (req, res) => {
   try {
     await Contact.findByIdAndDelete(req.params.id);
-    res.json({ success: true, message: 'Deleted' });
+    res.json({ success: true, message: 'Message deleted' });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
   }
 });
 
-// Resume
+// ===== RESUME =====
+
 app.get('/api/resume/download', async (req, res) => {
   try {
     const resume = await Resume.findOne({ active: true }).sort({ createdAt: -1 });
-    if (!resume) return res.status(404).json({ success: false, message: 'No resume' });
+    if (!resume) return res.status(404).json({ success: false, message: 'No resume available' });
     resume.downloadCount += 1;
     await resume.save();
-    const filePath = path.join(__dirname, '..', resume.filepath);
+
+    const filePath = isServerless
+      ? path.join('/tmp', resume.filepath)
+      : path.join(__dirname, '..', 'backend', resume.filepath);
+    if (!fs.existsSync(filePath)) return res.status(404).json({ success: false, message: 'Resume file not found' });
     res.download(filePath, resume.filename);
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -351,11 +340,7 @@ app.post('/api/resume/upload', protect, async (req, res) => {
   try {
     const { filename, filepath } = req.body;
     await Resume.updateMany({}, { active: false });
-    const resume = await Resume.create({ 
-      filename: filename || 'resume.pdf', 
-      filepath: filepath || '/uploads/resume/resume.pdf', 
-      active: true 
-    });
+    const resume = await Resume.create({ filename: filename || 'resume.pdf', filepath: filepath || '/uploads/resume/resume.pdf', active: true });
     res.status(201).json({ success: true, message: 'Resume uploaded', resume });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
@@ -363,7 +348,8 @@ app.post('/api/resume/upload', protect, async (req, res) => {
 });
 
 // Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, '..', 'backend', 'uploads')));
+const uploadsPath = isServerless ? path.join('/tmp', 'uploads') : path.join(__dirname, '..', 'backend', 'uploads');
+app.use('/uploads', express.static(uploadsPath));
 
 // Serve frontend
 app.use(express.static(path.join(__dirname, '..', 'frontend')));
@@ -387,3 +373,11 @@ app.use((err, req, res, next) => {
 });
 
 module.exports = app;
+
+// Start server only if not on Vercel/Render serverless
+if (!isServerless) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
