@@ -72,17 +72,20 @@
 
         <!-- Add Project Form -->
         <div class="admin-form-card hidden" id="addProjectForm">
-          <h3>Add New Project</h3>
+          <h3 id="formTitle">Add New Project</h3>
           <form id="projectForm" enctype="multipart/form-data">
+            <input type="hidden" name="projectId" id="projectId" value="">
+            <input type="hidden" name="keepImages" id="keepImages" value="">
+
             <div class="form-row">
               <div class="form-group">
                 <label>Title *</label>
-                <input type="text" name="title" required placeholder="Project name">
+                <input type="text" name="title" id="projectTitle" required placeholder="Project name">
                 <div class="input-line"></div>
               </div>
               <div class="form-group">
                 <label>Category</label>
-                <select name="category" class="admin-select">
+                <select name="category" id="projectCategory" class="admin-select">
                   <option value="Web">Web</option>
                   <option value="AI">AI</option>
                   <option value="Backend">Backend</option>
@@ -93,18 +96,18 @@
             </div>
             <div class="form-group">
               <label>Description *</label>
-              <textarea name="description" rows="4" required placeholder="Project description..."></textarea>
+              <textarea name="description" id="projectDescription" rows="4" required placeholder="Project description..."></textarea>
               <div class="input-line"></div>
             </div>
             <div class="form-row">
               <div class="form-group">
                 <label>Tech Stack (comma separated)</label>
-                <input type="text" name="techStack" placeholder="React, Node.js, MongoDB">
+                <input type="text" name="techStack" id="projectTechStack" placeholder="React, Node.js, MongoDB">
                 <div class="input-line"></div>
               </div>
               <div class="form-group">
                 <label>Featured</label>
-                <select name="featured" class="admin-select">
+                <select name="featured" id="projectFeatured" class="admin-select">
                   <option value="false">No</option>
                   <option value="true">Yes</option>
                 </select>
@@ -113,17 +116,18 @@
             <div class="form-row">
               <div class="form-group">
                 <label>GitHub URL</label>
-                <input type="url" name="githubUrl" placeholder="https://github.com/...">
+                <input type="url" name="githubUrl" id="projectGithubUrl" placeholder="https://github.com/...">
                 <div class="input-line"></div>
               </div>
               <div class="form-group">
                 <label>Live URL</label>
-                <input type="url" name="liveUrl" placeholder="https://...">
+                <input type="url" name="liveUrl" id="projectLiveUrl" placeholder="https://...">
                 <div class="input-line"></div>
               </div>
             </div>
             <div class="form-group">
               <label>Images (up to 5)</label>
+              <div id="existingImages" class="image-previews"></div>
               <div class="file-upload-area" id="projectFileArea">
                 <i data-lucide="upload-cloud"></i>
                 <span>Click or drag images here</span>

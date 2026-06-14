@@ -107,23 +107,28 @@ function initForms() {
   document.getElementById('projectForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const formData = new FormData(e.target);
+    const projectId = document.getElementById('projectId').value;
+    const isEdit = !!projectId;
 
     try {
-      const res = await fetch(`${API_URL}/api/projects`, {
-        method: 'POST',
+      const url = isEdit ? `${API_URL}/api/projects/${projectId}` : `${API_URL}/api/projects`;
+      const res = await fetch(url, {
+        method: isEdit ? 'PUT' : 'POST',
         headers: { 'Authorization': `Bearer ${TOKEN}` },
         body: formData
       });
 
       const data = await res.json();
       if (data.success) {
-        showToast('Project added successfully!', 'success');
+        showToast(isEdit ? 'Project updated!' : 'Project added!', 'success');
         e.target.reset();
         document.getElementById('projectPreviews').innerHTML = '';
+        document.getElementById('existingImages').innerHTML = '';
+        document.getElementById('keepImages').value = '';
         hideAddProjectForm();
         loadProjects();
       } else {
-        showToast(data.message || 'Failed to add project', 'error');
+        showToast(data.message || 'Failed to save project', 'error');
       }
     } catch (err) {
       showToast('Network error', 'error');
@@ -185,6 +190,11 @@ function initForms() {
 
 // ===== SHOW/HIDE FORMS =====
 function showAddProjectForm() {
+  document.getElementById('formTitle').textContent = 'Add New Project';
+  document.getElementById('projectId').value = '';
+  document.getElementById('projectForm').reset();
+  document.getElementById('projectPreviews').innerHTML = '';
+  document.getElementById('existingImages').innerHTML = '';
   document.getElementById('addProjectForm').classList.remove('hidden');
 }
 function hideAddProjectForm() {
@@ -217,6 +227,9 @@ async function loadProjects() {
           <td>${p.techStack.slice(0, 3).map(t => `<span class="tag" style="font-size:0.6875rem;padding:2px 8px">${t}</span>`).join(' ')}</td>
           <td>
             <div class="table-actions">
+              <button class="table-action-btn view" onclick="editProject('${p._id}')">
+                <i data-lucide="pencil"></i>
+              </button>
               <button class="table-action-btn delete" onclick="deleteProject('${p._id}', '${p.title.replace(/'/g, "\\'")}')">
                 <i data-lucide="trash-2"></i>
               </button>
@@ -231,6 +244,53 @@ async function loadProjects() {
     tbody.innerHTML = '<tr><td colspan="5" class="table-empty">Failed to load projects</td></tr>';
   }
   lucide.createIcons();
+}
+
+async function editProject(id) {
+  try {
+    const res = await fetch(`${API_URL}/api/projects/${id}`);
+    const data = await res.json();
+    if (!data.success) { showToast('Failed to load project', 'error'); return; }
+
+    const p = data.project;
+    document.getElementById('formTitle').textContent = 'Edit Project';
+    document.getElementById('projectId').value = p._id;
+    document.getElementById('projectTitle').value = p.title;
+    document.getElementById('projectDescription').value = p.description;
+    document.getElementById('projectTechStack').value = (p.techStack || []).join(', ');
+    document.getElementById('projectCategory').value = p.category;
+    document.getElementById('projectFeatured').value = p.featured ? 'true' : 'false';
+    document.getElementById('projectGithubUrl').value = p.githubUrl || '';
+    document.getElementById('projectLiveUrl').value = p.liveUrl || '';
+
+    // Show existing images
+    const container = document.getElementById('existingImages');
+    container.innerHTML = '';
+    if (p.images && p.images.length > 0) {
+      const keepInput = document.getElementById('keepImages');
+      keepInput.value = JSON.stringify(p.images);
+      p.images.forEach(img => {
+        const div = document.createElement('div');
+        div.className = 'image-preview';
+        div.innerHTML = `<img src="${API_URL}${img}" alt=""><button type="button" class="remove-img" data-img="${img}">&times;</button>`;
+        container.appendChild(div);
+      });
+      // Add remove handlers
+      container.querySelectorAll('.remove-img').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const img = btn.dataset.img;
+          const keep = JSON.parse(document.getElementById('keepImages').value || '[]');
+          document.getElementById('keepImages').value = JSON.stringify(keep.filter(i => i !== img));
+          btn.parentElement.remove();
+        });
+      });
+    }
+
+    document.getElementById('projectPreviews').innerHTML = '';
+    document.getElementById('addProjectForm').classList.remove('hidden');
+  } catch (err) {
+    showToast('Network error', 'error');
+  }
 }
 
 async function deleteProject(id, title) {
