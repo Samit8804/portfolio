@@ -21,12 +21,12 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const isServerless = process.env.VERCEL === '1' || process.env.RENDER;
+const isVercel = process.env.VERCEL === '1';
 
 // Multer configuration for project images
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadPath = isServerless
+    const uploadPath = isVercel
       ? path.join('/tmp', 'uploads', 'projects')
       : path.join(__dirname, '..', 'backend', 'uploads', 'projects');
 
@@ -225,7 +225,7 @@ app.delete('/api/projects/:id', protect, async (req, res) => {
     if (!project) return res.status(404).json({ success: false, message: 'Project not found' });
 
     project.images.forEach(img => {
-      const filePath = isServerless
+      const filePath = isVercel
         ? path.join('/tmp', img)
         : path.join(__dirname, '..', 'backend', img);
       if (fs.existsSync(filePath)) fs.unlinkSync(filePath);
@@ -317,7 +317,7 @@ app.get('/api/resume/download', async (req, res) => {
     resume.downloadCount += 1;
     await resume.save();
 
-    const filePath = isServerless
+    const filePath = isVercel
       ? path.join('/tmp', resume.filepath)
       : path.join(__dirname, '..', 'backend', resume.filepath);
     if (!fs.existsSync(filePath)) return res.status(404).json({ success: false, message: 'Resume file not found' });
@@ -348,7 +348,7 @@ app.post('/api/resume/upload', protect, async (req, res) => {
 });
 
 // Serve uploaded files
-const uploadsPath = isServerless ? path.join('/tmp', 'uploads') : path.join(__dirname, '..', 'backend', 'uploads');
+const uploadsPath = isVercel ? path.join('/tmp', 'uploads') : path.join(__dirname, '..', 'backend', 'uploads');
 app.use('/uploads', express.static(uploadsPath));
 
 // Serve frontend
@@ -374,8 +374,8 @@ app.use((err, req, res, next) => {
 
 module.exports = app;
 
-// Start server only if not on Vercel/Render serverless
-if (!isServerless) {
+// Start server only when running locally
+if (!isVercel) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
