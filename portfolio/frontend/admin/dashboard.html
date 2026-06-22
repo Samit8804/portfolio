@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Dashboard | Samit Fartyal</title>
+
+  <!-- Theme Engine (must load first to prevent FOUC) -->
+  <script src="../js/theme-engine.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -36,6 +40,9 @@
         </button>
         <button class="sidebar-link" data-tab="messages">
           <i data-lucide="mail"></i><span>Messages</span>
+        </button>
+        <button class="sidebar-link" data-tab="theme">
+          <i data-lucide="palette"></i><span>Themes</span>
         </button>
       </nav>
 
@@ -262,6 +269,47 @@
           <div class="modal-content" style="max-width:600px">
             <button class="modal-close" onclick="closeMessageModal()"><i data-lucide="x"></i></button>
             <div id="messageDetail"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Theme Tab -->
+      <div class="tab-content" id="tab-theme">
+        <div class="admin-form-card">
+          <h3>Theme Settings</h3>
+          <p class="form-desc">A random accent theme is applied on every page refresh. You can preview themes below.</p>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:20px">
+            <div class="theme-preview" data-accent-theme="purple" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(124,58,237,0.1)" onclick="previewTheme('purple')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#7c3aed;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Cyber Purple</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#7c3aed</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="blue" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(14,165,233,0.1)" onclick="previewTheme('blue')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#0ea5e9;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Neon Blue</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#0ea5e9</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="red" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(239,68,68,0.1)" onclick="previewTheme('red')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#ef4444;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Crimson Red</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#ef4444</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="green" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(16,185,129,0.1)" onclick="previewTheme('green')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#10b981;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Emerald Green</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#10b981</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="gold" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(245,158,11,0.1)" onclick="previewTheme('gold')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#f59e0b;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Gold Luxury</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#f59e0b</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="orange" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(249,115,22,0.1)" onclick="previewTheme('orange')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#f97316;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Orange Sunset</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">#f97316</span>
+            </div>
           </div>
         </div>
       </div>

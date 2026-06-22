@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Admin Login | Samit Fartyal</title>
+
+  <!-- Theme Engine (must load first to prevent FOUC) -->
+  <script src="../js/theme-engine.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet">
@@ -32,13 +36,13 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: rgba(59, 130, 246, 0.1);
-      border: 1px solid rgba(59, 130, 246, 0.15);
+      background: rgba(var(--accent-blue-rgb), 0.1);
+      border: 1px solid rgba(var(--accent-blue-rgb), 0.15);
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
-      color: #60a5fa;
+      color: var(--accent-blue-light);
     }
     .login-icon svg { width: 28px; height: 28px; }
     .login-header h2 {

@@ -42,7 +42,8 @@ function initTabs() {
         projects: 'Manage Projects',
         certificates: 'Manage Certificates',
         resume: 'Upload Resume',
-        messages: 'Contact Messages'
+        messages: 'Contact Messages',
+        theme: 'Theme Settings'
       }[btn.dataset.tab];
 
       // Close mobile sidebar
@@ -407,7 +408,7 @@ async function loadMessages() {
 
     if (data.success && data.messages.length > 0) {
       tbody.innerHTML = data.messages.map(m => `
-        <tr style="${m.read ? '' : 'background:rgba(59,130,246,0.03)'}">
+        <tr style="${m.read ? '' : 'background:rgba(var(--accent-blue-rgb),0.03)'}">
           <td class="table-title">${m.name}</td>
           <td>${m.email}</td>
           <td>${m.subject || '-'}</td>
@@ -481,6 +482,23 @@ async function deleteMessage(id) {
 }
 
 // ===== TOAST =====
+// ===== THEME PREVIEW =====
+function previewTheme(theme) {
+  document.documentElement.setAttribute('data-accent-theme', theme);
+  document.documentElement.classList.add('theme-transitioning');
+  setTimeout(function() {
+    document.documentElement.classList.remove('theme-transitioning');
+  }, 1000);
+  try { sessionStorage.setItem('portfolio-accent-theme', theme); } catch(e) {}
+  showToast('Theme switched to ' + theme, 'success');
+
+  document.querySelectorAll('.theme-preview').forEach(function(el) {
+    el.style.borderColor = el.dataset.accentTheme === theme
+      ? 'var(--accent-blue)'
+      : 'transparent';
+  });
+}
+
 function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
