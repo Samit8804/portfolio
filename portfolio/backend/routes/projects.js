@@ -83,7 +83,7 @@ router.post('/', protect, (req, res) => {
     try {
       const { title, description, techStack, category, githubUrl, liveUrl, featured, order } = req.body;
 
-      const images = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
+      const images = req.files ? req.files.map(f => f.path || `/uploads/projects/${f.filename}`) : [];
 
       const project = await Project.create({
         title,
@@ -143,7 +143,7 @@ router.put('/:id', protect, (req, res) => {
       if (order !== undefined) project.order = order;
 
       // Handle images
-      const newImages = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
+      const newImages = req.files ? req.files.map(f => f.path || `/uploads/projects/${f.filename}`) : [];
       if (keepImages) {
         const existingImages = JSON.parse(keepImages || '[]');
         project.images = [...existingImages, ...newImages];
@@ -178,16 +178,6 @@ router.delete('/:id', protect, async (req, res) => {
         message: 'Project not found'
       });
     }
-
-    // Delete associated images
-    const fs = require('fs');
-    const path = require('path');
-    project.images.forEach(img => {
-      const filePath = path.join(__dirname, '..', img);
-      if (fs.existsSync(filePath)) {
-        fs.unlinkSync(filePath);
-      }
-    });
 
     await Project.findByIdAndDelete(req.params.id);
 

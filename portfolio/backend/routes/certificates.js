@@ -48,7 +48,7 @@ router.post('/', protect, (req, res) => {
         title,
         issuer,
         date: date || Date.now(),
-        image: `/uploads/certificates/${req.file.filename}`,
+        image: req.file.path || `/uploads/certificates/${req.file.filename}`,
         credentialUrl
       });
 
@@ -76,14 +76,6 @@ router.delete('/:id', protect, async (req, res) => {
         success: false,
         message: 'Certificate not found'
       });
-    }
-
-    // Delete associated image
-    const fs = require('fs');
-    const path = require('path');
-    const filePath = path.join(__dirname, '..', certificate.image);
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath);
     }
 
     await Certificate.findByIdAndDelete(req.params.id);

@@ -1,8 +1,6 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const multer = require('multer');
-const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
@@ -15,48 +13,13 @@ const Contact = require('../backend/models/Contact');
 const Admin = require('../backend/models/Admin');
 const Resume = require('../backend/models/Resume');
 
+const { uploadProjectImages } = require('../backend/middleware/upload');
+
 const app = express();
 
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-
-const isVercel = process.env.VERCEL === '1';
-
-// Multer configuration for project images
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = isVercel
-      ? path.join('/tmp', 'uploads', 'projects')
-      : path.join(__dirname, '..', 'backend', 'uploads', 'projects');
-
-    if (!fs.existsSync(uploadPath)) {
-      fs.mkdirSync(uploadPath, { recursive: true });
-    }
-
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uniqueName = `${Date.now()}-${Math.round(Math.random() * 1E9)}${path.extname(file.originalname)}`;
-    cb(null, uniqueName);
-  }
-});
-
-const uploadProjectImages = multer({
-  storage: storage,
-  fileFilter: (req, file, cb) => {
-    const allowedTypes = /jpeg|jpg|png|webp|gif/;
-    const extname = allowedTypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = allowedTypes.test(file.mimetype);
-
-    if (extname && mimetype) {
-      cb(null, true);
-    } else {
-      cb(new Error('Only image files (jpg, png, webp, gif) are allowed'), false);
-    }
-  },
-  limits: { fileSize: 5 * 1024 * 1024 }
-}).array('images', 5);
 
 // Lazy DB connection
 let dbConnected = false;
@@ -197,7 +160,7 @@ app.get('/api/projects/:id', async (req, res) => {
 app.post('/api/projects', protect, uploadProjectImages, async (req, res) => {
   try {
     const { title, description, techStack, category, githubUrl, liveUrl, featured, order } = req.body;
-    const images = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
+    const images = req.files ? req.files.map(f => f.path || `/uploads/projects/${f.filename}`) : [];
 
     const project = await Project.create({
       title, description,
@@ -229,7 +192,7 @@ app.put('/api/projects/:id', protect, uploadProjectImages, async (req, res) => {
     if (featured !== undefined) project.featured = featured === 'true' || featured === true;
     if (order !== undefined) project.order = order;
 
-    const newImages = req.files ? req.files.map(f => `/uploads/projects/${f.filename}`) : [];
+    const newImages = req.files ? req.files.map(f => f.path || `/uploads/projects/${f.filename}`) : [];
     if (keepImages) {
       project.images = [...JSON.parse(keepImages), ...newImages];
     } else if (newImages.length > 0) {
