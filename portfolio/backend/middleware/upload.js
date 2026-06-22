@@ -13,7 +13,10 @@ cloudinary.config({
 const useCloudinary = !!(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET);
 
 const createStorage = (folder) => {
-  const uploadPath = path.join(__dirname, '..', 'uploads', folder);
+  const isVercel = process.env.VERCEL === '1';
+  const uploadPath = isVercel
+    ? path.join('/tmp', 'uploads', folder)
+    : path.join(__dirname, '..', 'uploads', folder);
   if (!fs.existsSync(uploadPath)) {
     fs.mkdirSync(uploadPath, { recursive: true });
   }

@@ -19,7 +19,10 @@ router.get('/download', async (req, res) => {
       });
     }
 
-    const filePath = path.join(__dirname, '..', resume.filepath);
+    const isVercel = process.env.VERCEL === '1';
+    const filePath = isVercel
+      ? path.join('/tmp', resume.filepath)
+      : path.join(__dirname, '..', resume.filepath);
 
     if (!fs.existsSync(filePath)) {
       return res.status(404).json({
