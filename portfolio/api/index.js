@@ -1,10 +1,13 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
+const fs = require('fs');
 const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 
 try { require('dotenv').config(); } catch(e) {}
+
+const isVercel = process.env.VERCEL === '1';
 
 // Load models
 const Project = require('../backend/models/Project');
