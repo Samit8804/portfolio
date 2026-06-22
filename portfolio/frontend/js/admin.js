@@ -489,7 +489,6 @@ function previewTheme(theme) {
   setTimeout(function() {
     document.documentElement.classList.remove('theme-transitioning');
   }, 1000);
-  try { sessionStorage.setItem('portfolio-accent-theme', theme); } catch(e) {}
   showToast('Theme switched to ' + theme, 'success');
 
   document.querySelectorAll('.theme-preview').forEach(function(el) {

@@ -1,12 +1,6 @@
 (function() {
   var themes = ['purple', 'blue', 'red', 'green', 'gold', 'orange'];
-  var storageKey = 'portfolio-accent-theme';
-  var theme = sessionStorage.getItem(storageKey);
-
-  if (!theme || themes.indexOf(theme) === -1) {
-    theme = themes[Math.floor(Math.random() * themes.length)];
-    try { sessionStorage.setItem(storageKey, theme); } catch(e) {}
-  }
+  var theme = themes[Math.floor(Math.random() * themes.length)];
 
   document.documentElement.setAttribute('data-accent-theme', theme);
 
