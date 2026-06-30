@@ -286,11 +286,53 @@ app.delete('/api/certificates/:id', protect, async (req, res) => {
 
 // ===== CONTACT =====
 
+const nodemailer = require('nodemailer');
+
+function createTransporter() {
+  if (process.env.EMAIL_USER && process.env.EMAIL_PASS) {
+    return nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user: process.env.EMAIL_USER, pass: process.env.EMAIL_PASS }
+    });
+  }
+  return null;
+}
+
 app.post('/api/contact', contactLimiter, async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
     if (!name || !email || !message) return res.status(400).json({ success: false, message: 'Name, email, and message required' });
+
     const contact = await Contact.create({ name, email, subject: subject || 'No Subject', message });
+
+    // Send email notification
+    const transporter = createTransporter();
+    if (transporter) {
+      try {
+        await transporter.sendMail({
+          from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+          to: 'samitfartyal@gmail.com',
+          replyTo: email,
+          subject: `Portfolio Contact: ${subject || 'No Subject'}`,
+          html: `
+            <div style="font-family:sans-serif;max-width:600px;margin:0 auto">
+              <h2 style="color:#3b82f6">New Contact Message</h2>
+              <table style="width:100%;border-collapse:collapse">
+                <tr><td style="padding:8px 0;color:#64748b;font-weight:600">Name:</td><td>${name}</td></tr>
+                <tr><td style="padding:8px 0;color:#64748b;font-weight:600">Email:</td><td>${email}</td></tr>
+                <tr><td style="padding:8px 0;color:#64748b;font-weight:600">Subject:</td><td>${subject || 'N/A'}</td></tr>
+              </table>
+              <div style="margin-top:16px;padding:16px;background:#f8fafc;border-radius:8px;border:1px solid #e2e8f0">
+                <p style="margin:0;color:#0f172a;white-space:pre-wrap">${message}</p>
+              </div>
+            </div>
+          `
+        });
+      } catch (emailErr) {
+        console.error('Email send failed:', emailErr.message);
+      }
+    }
+
     res.status(201).json({ success: true, message: 'Message sent successfully!', contact });
   } catch (err) {
     res.status(500).json({ success: false, message: err.message });
