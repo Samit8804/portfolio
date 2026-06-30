@@ -187,6 +187,28 @@ function initForms() {
       showToast('Network error', 'error');
     }
   });
+
+  // Delete resume
+  document.getElementById('deleteResumeBtn').addEventListener('click', async () => {
+    if (!confirm('Delete resume? The static backup will still be available for download.')) return;
+
+    try {
+      const res = await fetch(`${API_URL}/api/resume`, {
+        method: 'DELETE',
+        headers: { 'Authorization': `Bearer ${TOKEN}` }
+      });
+
+      const data = await res.json();
+      if (data.success) {
+        showToast('Resume deleted', 'success');
+        loadResumeStats();
+      } else {
+        showToast(data.message || 'Failed', 'error');
+      }
+    } catch (err) {
+      showToast('Network error', 'error');
+    }
+  });
 }
 
 // ===== SHOW/HIDE FORMS =====
@@ -386,7 +408,7 @@ async function loadResumeStats() {
           <span>Downloads</span>
         </div>
         <div class="resume-stat">
-          <strong>${data.hasResume ? data.filename : 'None'}</strong>
+          <strong>${data.hasResume ? data.filename : 'None (backup active)'}</strong>
           <span>Current File</span>
         </div>
       `;

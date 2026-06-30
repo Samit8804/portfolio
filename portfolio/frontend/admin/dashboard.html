@@ -245,7 +245,10 @@
                 <input type="file" name="resume" accept=".pdf" id="resumeFileInput" required>
               </div>
             </div>
-            <button type="submit" class="btn btn-primary"><i data-lucide="upload"></i> Upload Resume</button>
+            <div style="display:flex;gap:12px;margin-top:16px">
+              <button type="submit" class="btn btn-primary"><i data-lucide="upload"></i> Upload Resume</button>
+              <button type="button" class="btn btn-danger" id="deleteResumeBtn"><i data-lucide="trash-2"></i> Delete Resume</button>
+            </div>
           </form>
         </div>
       </div>
