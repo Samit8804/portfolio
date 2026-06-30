@@ -50,16 +50,23 @@ async function autoSeed() {
     console.log('Sample projects auto-seeded');
   }
 
-  // Seed resume & copy to writable location on Vercel
-  const resumeCount = await Resume.countDocuments();
-  if (resumeCount === 0) {
-    const staticResumePath = path.join(__dirname, '..', 'backend', 'uploads', 'resume', 'Samit_Fartyal_Resume.pdf.pdf');
-    if (fs.existsSync(staticResumePath)) {
-      if (isVercel) {
-        const tmpDir = path.join('/tmp', 'uploads', 'resume');
-        if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
-        fs.copyFileSync(staticResumePath, path.join(tmpDir, 'Samit_Fartyal_Resume.pdf.pdf'));
-      }
+  // Ensure resume file is available (copy to /tmp/ every time on Vercel)
+  const resumePaths = [
+    path.join(__dirname, 'Samit_Fartyal_Resume.pdf.pdf'),
+    path.join(__dirname, '..', 'backend', 'uploads', 'resume', 'Samit_Fartyal_Resume.pdf.pdf'),
+  ];
+  let staticResumePath = null;
+  for (const p of resumePaths) {
+    if (fs.existsSync(p)) { staticResumePath = p; break; }
+  }
+  if (staticResumePath) {
+    if (isVercel) {
+      const tmpDir = path.join('/tmp', 'uploads', 'resume');
+      if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
+      fs.copyFileSync(staticResumePath, path.join(tmpDir, 'Samit_Fartyal_Resume.pdf.pdf'));
+    }
+    const resumeCount = await Resume.countDocuments();
+    if (resumeCount === 0) {
       await Resume.create({
         filename: 'Samit_Fartyal_Resume.pdf',
         filepath: '/uploads/resume/Samit_Fartyal_Resume.pdf.pdf',
@@ -321,31 +328,30 @@ app.delete('/api/contact/:id', protect, async (req, res) => {
 
 app.get('/api/resume/download', async (req, res) => {
   try {
-    const resume = await Resume.findOne({ active: true }).sort({ createdAt: -1 });
+    // Try multiple paths where the resume file might be
+    const paths = [
+      path.join(__dirname, 'Samit_Fartyal_Resume.pdf.pdf'),
+      path.join(__dirname, '..', 'backend', 'uploads', 'resume', 'Samit_Fartyal_Resume.pdf.pdf'),
+    ];
+    if (isVercel) {
+      paths.push(path.join('/tmp', 'uploads', 'resume', 'Samit_Fartyal_Resume.pdf.pdf'));
+    }
 
-    if (resume) {
-      const dbPath = isVercel
-        ? path.join('/tmp', resume.filepath)
-        : path.join(__dirname, '..', 'backend', resume.filepath);
-      if (fs.existsSync(dbPath)) {
-        resume.downloadCount += 1;
-        await resume.save();
-        return res.download(dbPath, resume.filename);
+    let filePath = null;
+    for (const p of paths) {
+      if (fs.existsSync(p)) {
+        filePath = p;
+        break;
       }
     }
 
-    // Fallback: serve static resume file
-    const staticName = 'Samit_Fartyal_Resume.pdf.pdf';
-    const staticPath = isVercel
-      ? path.join('/tmp', 'uploads', 'resume', staticName)
-      : path.join(__dirname, '..', 'backend', 'uploads', 'resume', staticName);
-
-    if (fs.existsSync(staticPath)) {
+    if (filePath) {
+      const resume = await Resume.findOne({ active: true }).sort({ createdAt: -1 });
       if (resume) {
         resume.downloadCount += 1;
         await resume.save();
       }
-      return res.download(staticPath, 'Samit_Fartyal_Resume.pdf');
+      return res.download(filePath, 'Samit_Fartyal_Resume.pdf');
     }
 
     return res.status(404).json({ success: false, message: 'No resume available' });
