@@ -16,7 +16,7 @@ const Contact = require('../backend/models/Contact');
 const Admin = require('../backend/models/Admin');
 const Resume = require('../backend/models/Resume');
 
-const { uploadProjectImages } = require('../backend/middleware/upload');
+const { uploadProjectImages, uploadResume } = require('../backend/middleware/upload');
 
 const app = express();
 
@@ -326,15 +326,30 @@ app.get('/api/resume/stats', protect, async (req, res) => {
   }
 });
 
-app.post('/api/resume/upload', protect, async (req, res) => {
-  try {
-    const { filename, filepath } = req.body;
-    await Resume.updateMany({}, { active: false });
-    const resume = await Resume.create({ filename: filename || 'resume.pdf', filepath: filepath || '/uploads/resume/resume.pdf', active: true });
-    res.status(201).json({ success: true, message: 'Resume uploaded', resume });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
+app.post('/api/resume/upload', protect, (req, res) => {
+  uploadResume(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+
+    try {
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Please upload a PDF file' });
+      }
+
+      await Resume.updateMany({}, { active: false });
+
+      const resume = await Resume.create({
+        filename: req.file.originalname,
+        filepath: `/uploads/resume/${req.file.filename}`,
+        active: true
+      });
+
+      res.status(201).json({ success: true, message: 'Resume uploaded successfully', resume });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  });
 });
 
 // Serve uploaded files
