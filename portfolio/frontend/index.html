@@ -93,7 +93,9 @@
 
   <!-- ===== HERO SECTION ===== -->
   <section id="hero" class="hero-section">
-    <div class="hero-bg-type" aria-hidden="true">SAMIT FARTYAL</div>
+
+    <!-- Rear text layer (always visible behind portrait) -->
+    <div class="hero-bg-type hero-bg-type-rear" aria-hidden="true">SAMIT FARTYAL</div>
 
     <div class="hero-edge hero-edge-tl">
       <span class="hero-label">Full Stack Developer</span>
@@ -112,11 +114,14 @@
       </div>
     </div>
 
-    <div class="hero-center">
-      <div class="hero-portrait">
+    <div class="hero-center" id="heroCenter">
+      <div class="hero-portrait" id="heroPortrait">
         <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" onerror="this.style.display='none';">
       </div>
     </div>
+
+    <!-- Front text layer (covers portrait in idle, fades on hover) -->
+    <div class="hero-bg-type hero-bg-type-front" aria-hidden="true">SAMIT FARTYAL</div>
 
     <div class="hero-actions">
       <a href="#projects" class="hero-action-btn">Projects</a>
