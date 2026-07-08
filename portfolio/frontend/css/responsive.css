@@ -1,5 +1,5 @@
 @media (max-width: 1024px) {
-  .hero-bg-type { font-size: clamp(5rem, 14vw, 10rem); }
+  .hero-bg-type { font-size: clamp(5rem, 16vw, 10rem); }
   .hero-portrait { width: min(50vh, 50vw); height: min(50vh, 50vw); }
   .hero-edge-tl { top: 80px; left: 24px; }
   .hero-edge-tr { top: 80px; right: 24px; }
