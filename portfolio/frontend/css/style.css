@@ -336,7 +336,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
   align-items: center;
   justify-content: center;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(10rem, 22vw, 24rem);
+  font-size: clamp(6rem, 14vw, 16rem);
   line-height: 0.85;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.035);
@@ -416,8 +416,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
 
 .hero-portrait {
   width: min(55vh, 55vw);
-  height: min(55vh, 55vw);
-  border-radius: 50%;
+  height: min(68vh, 65vw);
   overflow: hidden;
   box-shadow: 0 0 80px rgba(0,0,0,0.5);
   transition: transform 0.5s ease, box-shadow 0.5s ease;
@@ -431,10 +430,12 @@ input, textarea { font-family: inherit; font-size: inherit; }
   height: 100%;
   object-fit: cover;
   filter: grayscale(100%) contrast(1.15);
-  transition: filter 0.6s ease, transform 0.6s ease;
+  opacity: 0.7;
+  transition: filter 0.6s ease, transform 0.6s ease, opacity 0.6s ease;
 }
 .hero-center:hover .hero-portrait img {
   filter: grayscale(0%) contrast(1);
+  opacity: 1;
   transform: scale(1.04);
 }
 
