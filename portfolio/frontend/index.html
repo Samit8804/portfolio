@@ -13,7 +13,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Poppins:wght@400;500;600;700;800&family=Bebas+Neue&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@0.344.0/dist/umd/lucide.min.js"></script>
@@ -93,44 +93,39 @@
 
   <!-- ===== HERO SECTION ===== -->
   <section id="hero" class="hero-section">
-    <div class="hero-container">
-      <div class="hero-visual" data-animate="fade-right">
-        <div class="hero-portrait-frame">
-          <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" onerror="this.style.display='none';">
-        </div>
-      </div>
+    <div class="hero-bg-type" aria-hidden="true">SAMIT FARTYAL</div>
 
-      <div class="hero-text" data-animate="fade-left">
-        <p class="hero-suptitle">Full Stack Developer</p>
-
-        <h1 class="hero-name">
-          Samit
-          <span class="hero-name-line-2">Fartyal</span>
-        </h1>
-
-        <p class="hero-role">
-          Building impactful digital solutions with clean code.
-          Turning complex problems into elegant applications.
-        </p>
-
-        <div class="hero-actions">
-          <a href="#projects" class="btn-primary">View Projects</a>
-          <button id="downloadResumeBtn" class="btn-secondary" data-magnetic>Resume</button>
-          <a href="https://github.com/samitfartyal" target="_blank" class="btn-icon" aria-label="GitHub">
-            <i data-lucide="github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" class="btn-icon" aria-label="LinkedIn">
-            <i data-lucide="linkedin"></i>
-          </a>
-        </div>
+    <div class="hero-edge hero-edge-tl">
+      <span class="hero-label">Full Stack Developer</span>
+    </div>
+    <div class="hero-edge hero-edge-tr">
+      <span class="hero-label">Available</span>
+    </div>
+    <div class="hero-edge hero-edge-bl">
+      <a href="mailto:samitfartyal34@gmail.com" class="hero-edge-link">samitfartyal34@gmail.com</a>
+    </div>
+    <div class="hero-edge hero-edge-br">
+      <div class="hero-edge-socials">
+        <a href="https://github.com/samitfartyal" target="_blank" aria-label="GitHub">GH</a>
+        <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" aria-label="LinkedIn">LI</a>
+        <a href="https://twitter.com/samitfartyal" target="_blank" aria-label="Twitter">X</a>
       </div>
     </div>
 
-    <div class="hero-scroll-indicator">
-      <div class="scroll-mouse">
-        <div class="scroll-wheel"></div>
+    <div class="hero-center">
+      <div class="hero-portrait">
+        <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" onerror="this.style.display='none';">
       </div>
-      <span>Scroll</span>
+    </div>
+
+    <div class="hero-actions">
+      <a href="#projects" class="hero-action-btn">Projects</a>
+      <button id="downloadResumeBtn" class="hero-action-btn" data-magnetic>Resume</button>
+    </div>
+
+    <div class="hero-scroll-indicator">
+      <span class="hero-scroll-text">Scroll</span>
+      <div class="hero-scroll-line"></div>
     </div>
   </section>
 

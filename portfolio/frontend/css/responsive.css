@@ -1,21 +1,11 @@
 @media (max-width: 1024px) {
-  .hero-container {
-    grid-template-columns: 1fr;
-    gap: 40px;
-    text-align: center;
-  }
-  .hero-visual { order: 1; }
-  .hero-text {
-    order: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  .hero-role { max-width: 100%; }
-  .hero-name { font-size: clamp(3rem, 10vw, 4.5rem); }
-  .hero-name-line-2 { font-size: clamp(2rem, 7vw, 3.5rem); }
-  .hero-portrait-frame { width: 260px; height: 320px; }
-  .hero-actions { justify-content: center; flex-wrap: wrap; }
+  .hero-bg-type { font-size: clamp(7rem, 18vw, 10rem); }
+  .hero-portrait { width: min(50vh, 50vw); height: min(50vh, 50vw); }
+  .hero-edge-tl { top: 80px; left: 24px; }
+  .hero-edge-tr { top: 80px; right: 24px; }
+  .hero-edge-bl { bottom: 24px; left: 24px; }
+  .hero-edge-br { bottom: 24px; right: 24px; }
+  .hero-actions { bottom: 64px; gap: 24px; }
 
   .about-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
@@ -32,12 +22,15 @@
   .nav-menu-btn { display: flex; }
   .mobile-menu { display: flex; }
 
-  .hero-name { font-size: clamp(2.5rem, 12vw, 3.5rem); }
-  .hero-name-line-2 { font-size: clamp(1.5rem, 8vw, 2.5rem); }
-  .hero-portrait-frame { width: 200px; height: 260px; }
-  .hero-role { font-size: 1rem; }
-  .hero-actions .btn-primary,
-  .hero-actions .btn-secondary { padding: 12px 24px; font-size: 0.75rem; }
+  .hero-bg-type { font-size: clamp(4rem, 14vw, 7rem); }
+  .hero-portrait { width: min(45vh, 60vw); height: min(45vh, 60vw); }
+  .hero-edge-tl { top: 72px; left: 16px; }
+  .hero-edge-tr { top: 72px; right: 16px; }
+  .hero-edge-bl { display: none; }
+  .hero-edge-br { bottom: 72px; right: 16px; }
+  .hero-edge-socials { gap: 12px; }
+  .hero-actions { bottom: 48px; gap: 20px; }
+  .hero-action-btn { font-size: 0.6875rem; }
 
   .projects-grid { grid-template-columns: 1fr; }
   .certificates-grid { grid-template-columns: 1fr; }
@@ -51,7 +44,10 @@
 }
 
 @media (max-width: 480px) {
-  .hero-name { font-size: clamp(2rem, 14vw, 2.5rem); }
-  .hero-name-line-2 { font-size: clamp(1.25rem, 9vw, 2rem); }
-  .hero-portrait-frame { width: 160px; height: 220px; }
+  .hero-bg-type { font-size: clamp(2.8rem, 12vw, 4rem); }
+  .hero-portrait { width: min(40vh, 70vw); height: min(40vh, 70vw); }
+  .hero-edge-tl { display: none; }
+  .hero-edge-tr { display: none; }
+  .hero-edge-br { bottom: 64px; }
+  .hero-actions { bottom: 36px; gap: 16px; }
 }
