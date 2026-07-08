@@ -287,35 +287,55 @@
           <p class="form-desc">A random accent theme is applied on every page refresh. You can preview themes below.</p>
 
           <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px;margin-top:20px">
-            <div class="theme-preview" data-accent-theme="brown" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(139,115,85,0.1)" onclick="previewTheme('brown')">
+            <div class="theme-preview" data-accent-theme="monochrome" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(200,200,200,0.08)" onclick="previewTheme('monochrome')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#c8c8c8;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Monochrome</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Editorial</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="electric-blue" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(30,100,220,0.1)" onclick="previewTheme('electric-blue')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#1e64dc;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Electric Blue</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Modern AI</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="emerald" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(16,160,100,0.1)" onclick="previewTheme('emerald')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#10a064;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Emerald</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Sustainable</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="warm-brown" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(139,115,85,0.1)" onclick="previewTheme('warm-brown')">
               <div style="width:40px;height:40px;border-radius:50%;background:#8B7355;margin:0 auto 8px"></div>
               <strong style="display:block;font-size:0.875rem">Warm Brown</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#8B7355</span>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Premium</span>
             </div>
-            <div class="theme-preview" data-accent-theme="slate" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(74,111,165,0.1)" onclick="previewTheme('slate')">
-              <div style="width:40px;height:40px;border-radius:50%;background:#4A6FA5;margin:0 auto 8px"></div>
-              <strong style="display:block;font-size:0.875rem">Slate Blue</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#4A6FA5</span>
+            <div class="theme-preview" data-accent-theme="purple" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(130,70,220,0.1)" onclick="previewTheme('purple')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#8246dc;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Purple</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Creative</span>
             </div>
-            <div class="theme-preview" data-accent-theme="cream" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(232,224,213,0.1)" onclick="previewTheme('cream')">
-              <div style="width:40px;height:40px;border-radius:50%;background:#E8E0D5;margin:0 auto 8px"></div>
-              <strong style="display:block;font-size:0.875rem">Warm Cream</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#E8E0D5</span>
+            <div class="theme-preview" data-accent-theme="crimson" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(160,40,50,0.1)" onclick="previewTheme('crimson')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#a02832;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Crimson</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Luxury</span>
             </div>
-            <div class="theme-preview" data-accent-theme="charcoal" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(90,90,90,0.1)" onclick="previewTheme('charcoal')">
-              <div style="width:40px;height:40px;border-radius:50%;background:#5A5A5A;margin:0 auto 8px"></div>
-              <strong style="display:block;font-size:0.875rem">Charcoal</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#5A5A5A</span>
+            <div class="theme-preview" data-accent-theme="golden" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(200,160,60,0.1)" onclick="previewTheme('golden')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#c8a03c;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Golden</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Premium</span>
             </div>
-            <div class="theme-preview" data-accent-theme="burgundy" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(114,47,55,0.1)" onclick="previewTheme('burgundy')">
-              <div style="width:40px;height:40px;border-radius:50%;background:#722F37;margin:0 auto 8px"></div>
-              <strong style="display:block;font-size:0.875rem">Burgundy</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#722F37</span>
+            <div class="theme-preview" data-accent-theme="rose" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(200,80,120,0.1)" onclick="previewTheme('rose')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#c85078;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Rose</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Elegant</span>
             </div>
-            <div class="theme-preview" data-accent-theme="sage" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(123,141,110,0.1)" onclick="previewTheme('sage')">
-              <div style="width:40px;height:40px;border-radius:50%;background:#7B8D6E;margin:0 auto 8px"></div>
-              <strong style="display:block;font-size:0.875rem">Sage Green</strong>
-              <span style="font-size:0.75rem;color:var(--text-muted)">#7B8D6E</span>
+            <div class="theme-preview" data-accent-theme="teal" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(20,160,180,0.1)" onclick="previewTheme('teal')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#14a0b4;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Teal</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Fresh</span>
+            </div>
+            <div class="theme-preview" data-accent-theme="platinum" style="cursor:pointer;padding:20px;border-radius:12px;border:2px solid transparent;text-align:center;background:rgba(160,160,170,0.08)" onclick="previewTheme('platinum')">
+              <div style="width:40px;height:40px;border-radius:50%;background:#a0a0aa;margin:0 auto 8px"></div>
+              <strong style="display:block;font-size:0.875rem">Platinum</strong>
+              <span style="font-size:0.75rem;color:var(--text-muted)">Metallic</span>
             </div>
           </div>
         </div>

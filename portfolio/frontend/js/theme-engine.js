@@ -1,19 +1,55 @@
 (function() {
-  var themes = ['brown', 'slate', 'cream', 'charcoal', 'burgundy', 'sage'];
-  var theme = themes[Math.floor(Math.random() * themes.length)];
-
-  document.documentElement.setAttribute('data-accent-theme', theme);
+  var themes = [
+    'monochrome', 'electric-blue', 'emerald', 'warm-brown',
+    'purple', 'crimson', 'golden', 'rose', 'teal', 'platinum'
+  ];
 
   var colors = {
-    brown: { r: 139, g: 115, b: 85 },
-    slate: { r: 74, g: 111, b: 165 },
-    cream: { r: 232, g: 224, b: 213 },
-    charcoal: { r: 120, g: 120, b: 120 },
-    burgundy: { r: 114, g: 47, b: 55 },
-    sage: { r: 123, g: 141, b: 110 }
+    'monochrome':     { r: 200, g: 200, b: 200 },
+    'electric-blue':  { r: 60,  g: 140, b: 255 },
+    'emerald':        { r: 16,  g: 160, b: 100 },
+    'warm-brown':     { r: 180, g: 150, b: 110 },
+    'purple':         { r: 160, g: 100, b: 240 },
+    'crimson':        { r: 200, g: 60,  b: 70  },
+    'golden':         { r: 230, g: 190, b: 80  },
+    'rose':           { r: 220, g: 120, b: 160 },
+    'teal':           { r: 60,  g: 190, b: 210 },
+    'platinum':       { r: 190, g: 190, b: 200 }
   };
 
-  function createParticles() {
+  function getStored() { return sessionStorage.getItem('sf-theme'); }
+  function setStored(t) { sessionStorage.setItem('sf-theme', t); }
+
+  var current = getStored();
+  if (!current) {
+    current = themes[Math.floor(Math.random() * themes.length)];
+    setStored(current);
+  }
+
+  applyTheme(current);
+
+  function applyTheme(theme) {
+    document.documentElement.setAttribute('data-accent-theme', theme);
+    setStored(theme);
+    createParticles(theme);
+  }
+
+  function shuffleTheme() {
+    var remaining = themes.filter(function(t) { return t !== current; });
+    var next = remaining[Math.floor(Math.random() * remaining.length)];
+    current = next;
+
+    document.documentElement.classList.add('theme-transitioning');
+    applyTheme(next);
+    setTimeout(function() {
+      document.documentElement.classList.remove('theme-transitioning');
+    }, 700);
+  }
+
+  function createParticles(theme) {
+    var existing = document.getElementById('themeParticles');
+    if (existing) existing.remove();
+
     var c = colors[theme] || { r: 255, g: 255, b: 255 };
     var container = document.createElement('div');
     container.className = 'theme-particles';
@@ -27,17 +63,13 @@
       p.style.left = Math.random() * 100 + '%';
       p.style.animationDelay = Math.random() * 12 + 's';
       p.style.animationDuration = (10 + Math.random() * 14) + 's';
-      p.style.background = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.25)';
+      p.style.background = 'rgba(' + c.r + ',' + c.g + ',' + c.b + ',0.3)';
       container.appendChild(p);
     }
     document.body.appendChild(container);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', createParticles);
-  } else {
-    createParticles();
-  }
+  window.shuffleTheme = shuffleTheme;
 
   window.addEventListener('load', function() {
     document.documentElement.classList.add('theme-transitioning');
