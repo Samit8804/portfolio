@@ -336,7 +336,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
   align-items: center;
   justify-content: center;
   font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(7rem, 16vw, 18rem);
+  font-size: clamp(7.5rem, 17vw, 19rem);
   line-height: 0.85;
   letter-spacing: 0.04em;
   color: rgba(255, 255, 255, 0.035);
