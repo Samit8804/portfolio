@@ -1,29 +1,25 @@
-/* ========================================
-   SAMIT FARTYAL - PORTFOLIO JS
-   ======================================== */
-
 const API_URL = '';
 let allProjects = [];
 let currentPage = 1;
 let currentFilter = 'All';
 let currentSearch = '';
 
-// ===== INITIALIZATION =====
 document.addEventListener('DOMContentLoaded', () => {
   initLoader();
+  initCursor();
   initNavbar();
   initThemeToggle();
-  initTypingEffect();
   initScrollAnimations();
   initSkillBars();
   initMobileMenu();
   initContactForm();
   initDownloadResume();
   initModals();
+  initMagneticButtons();
+  initParallax();
   loadProjects();
   loadCertificates();
 
-  // Initialize Lucide icons
   if (typeof lucide !== 'undefined') {
     lucide.createIcons();
   }
@@ -32,13 +28,46 @@ document.addEventListener('DOMContentLoaded', () => {
 // ===== LOADER =====
 function initLoader() {
   const loader = document.getElementById('loader');
+  const fill = loader?.querySelector('.loader-bar-fill');
+  if (fill) setTimeout(() => fill.style.width = '100%', 100);
   window.addEventListener('load', () => {
-    setTimeout(() => {
-      loader.classList.add('hidden');
-    }, 1200);
+    setTimeout(() => loader?.classList.add('hidden'), 800);
   });
-  // Fallback
-  setTimeout(() => loader.classList.add('hidden'), 3000);
+  setTimeout(() => loader?.classList.add('hidden'), 2500);
+}
+
+// ===== CUSTOM CURSOR =====
+function initCursor() {
+  const dot = document.createElement('div');
+  dot.className = 'cursor-dot';
+  const ring = document.createElement('div');
+  ring.className = 'cursor-ring';
+  document.body.appendChild(dot);
+  document.body.appendChild(ring);
+
+  let mx = 0, my = 0;
+  let ringX = 0, ringY = 0;
+
+  document.addEventListener('mousemove', (e) => {
+    mx = e.clientX;
+    my = e.clientY;
+    dot.style.left = mx + 'px';
+    dot.style.top = my + 'px';
+  });
+
+  function animateRing() {
+    ringX += (mx - ringX) * 0.12;
+    ringY += (my - ringY) * 0.12;
+    ring.style.left = ringX + 'px';
+    ring.style.top = ringY + 'px';
+    requestAnimationFrame(animateRing);
+  }
+  animateRing();
+
+  document.querySelectorAll('a, button, input, textarea, [data-magnetic]').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('hover'));
+  });
 }
 
 // ===== NAVBAR =====
@@ -47,14 +76,12 @@ function initNavbar() {
   const navLinks = document.querySelectorAll('.nav-link');
 
   window.addEventListener('scroll', () => {
-    // Scrolled state
     if (window.scrollY > 50) {
       navbar.classList.add('scrolled');
     } else {
       navbar.classList.remove('scrolled');
     }
 
-    // Active link
     const sections = document.querySelectorAll('section[id]');
     let current = '';
     sections.forEach(section => {
@@ -77,14 +104,14 @@ function initNavbar() {
 function initMobileMenu() {
   const menuBtn = document.getElementById('menuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
-  const mobileLinks = mobileMenu.querySelectorAll('.mobile-link');
+  const mobileLinks = mobileMenu?.querySelectorAll('.mobile-link');
 
-  menuBtn.addEventListener('click', () => {
+  menuBtn?.addEventListener('click', () => {
     menuBtn.classList.toggle('active');
     mobileMenu.classList.toggle('active');
   });
 
-  mobileLinks.forEach(link => {
+  mobileLinks?.forEach(link => {
     link.addEventListener('click', () => {
       menuBtn.classList.remove('active');
       mobileMenu.classList.remove('active');
@@ -95,51 +122,14 @@ function initMobileMenu() {
 // ===== THEME TOGGLE =====
 function initThemeToggle() {
   const toggle = document.getElementById('themeToggle');
-  const savedTheme = localStorage.getItem('theme') || 'dark';
-  document.documentElement.setAttribute('data-theme', savedTheme);
-
-  toggle.addEventListener('click', () => {
+  toggle?.addEventListener('click', () => {
+    document.documentElement.classList.toggle('theme-transitioning');
     const current = document.documentElement.getAttribute('data-theme');
     const next = current === 'dark' ? 'light' : 'dark';
     document.documentElement.setAttribute('data-theme', next);
     localStorage.setItem('theme', next);
+    setTimeout(() => document.documentElement.classList.remove('theme-transitioning'), 800);
   });
-}
-
-// ===== TYPING EFFECT =====
-function initTypingEffect() {
-  const el = document.getElementById('typingText');
-  const roles = ['Full Stack Developer', 'AI Enthusiast', 'Problem Solver', 'Open Source Contributor'];
-  let roleIndex = 0;
-  let charIndex = 0;
-  let isDeleting = false;
-
-  function type() {
-    const currentRole = roles[roleIndex];
-
-    if (isDeleting) {
-      el.textContent = currentRole.substring(0, charIndex - 1);
-      charIndex--;
-    } else {
-      el.textContent = currentRole.substring(0, charIndex + 1);
-      charIndex++;
-    }
-
-    let speed = isDeleting ? 40 : 80;
-
-    if (!isDeleting && charIndex === currentRole.length) {
-      speed = 2000;
-      isDeleting = true;
-    } else if (isDeleting && charIndex === 0) {
-      isDeleting = false;
-      roleIndex = (roleIndex + 1) % roles.length;
-      speed = 400;
-    }
-
-    setTimeout(type, speed);
-  }
-
-  type();
 }
 
 // ===== SCROLL ANIMATIONS =====
@@ -178,6 +168,32 @@ function initSkillBars() {
   if (skillsCard) observer.observe(skillsCard);
 }
 
+// ===== MAGNETIC BUTTONS =====
+function initMagneticButtons() {
+  document.querySelectorAll('[data-magnetic]').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+      const rect = btn.getBoundingClientRect();
+      const x = (e.clientX - rect.left - rect.width / 2) * 0.3;
+      const y = (e.clientY - rect.top - rect.height / 2) * 0.3;
+      btn.style.transform = `translate(${x}px, ${y}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = '';
+    });
+  });
+}
+
+// ===== PARALLAX =====
+function initParallax() {
+  window.addEventListener('scroll', () => {
+    const scrolled = window.scrollY;
+    document.querySelectorAll('[data-parallax]').forEach(el => {
+      const speed = parseFloat(el.dataset.parallax) || 0.3;
+      el.style.transform = `translateY(${scrolled * speed}px)`;
+    });
+  });
+}
+
 // ===== PROJECTS =====
 async function loadProjects() {
   const grid = document.getElementById('projectsGrid');
@@ -198,7 +214,6 @@ async function loadProjects() {
     lucide.createIcons();
   }
 
-  // Filter tabs
   document.querySelectorAll('.filter-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
@@ -209,9 +224,8 @@ async function loadProjects() {
     });
   });
 
-  // Search
   const searchInput = document.getElementById('projectSearch');
-  searchInput.addEventListener('input', (e) => {
+  searchInput?.addEventListener('input', (e) => {
     currentSearch = e.target.value.toLowerCase();
     currentPage = 1;
     renderProjects();
@@ -244,7 +258,7 @@ function renderProjects() {
   grid.innerHTML = filtered.map(project => {
     const hasImage = project.images && project.images.length > 0;
     return `
-      <div class="project-card" onclick="openProjectModal('${project._id}')" data-tilt>
+      <div class="project-card" onclick="openProjectModal('${project._id}')">
         <div class="project-card-image">
           ${hasImage
             ? `<img src="${API_URL}${project.images[0]}" alt="${project.title}" loading="lazy">`
@@ -270,23 +284,6 @@ function renderProjects() {
   }).join('');
 
   lucide.createIcons();
-  initTiltCards();
-}
-
-// ===== 3D TILT EFFECT =====
-function initTiltCards() {
-  document.querySelectorAll('[data-tilt]').forEach(card => {
-    card.addEventListener('mousemove', (e) => {
-      const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
-      card.style.transform = `translateY(-6px) rotateX(${y * -6}deg) rotateY(${x * 6}deg)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-    });
-  });
 }
 
 // ===== CERTIFICATES =====
@@ -311,33 +308,31 @@ async function loadCertificates() {
         </div>
       `).join('');
     } else {
-      document.getElementById('certsEmpty').style.display = 'flex';
+      const empty = document.getElementById('certsEmpty');
+      if (empty) empty.style.display = 'flex';
     }
   } catch (err) {
-    document.getElementById('certsEmpty').style.display = 'flex';
+    const empty = document.getElementById('certsEmpty');
+    if (empty) empty.style.display = 'flex';
   }
 }
 
 // ===== MODALS =====
 function initModals() {
-  // Certificate modal
-  document.getElementById('certModalClose').addEventListener('click', () => {
-    document.getElementById('certModal').classList.remove('active');
+  document.getElementById('certModalClose')?.addEventListener('click', () => {
+    document.getElementById('certModal')?.classList.remove('active');
   });
 
-  // Project modal
-  document.getElementById('projectModalClose').addEventListener('click', () => {
-    document.getElementById('projectModal').classList.remove('active');
+  document.getElementById('projectModalClose')?.addEventListener('click', () => {
+    document.getElementById('projectModal')?.classList.remove('active');
   });
 
-  // Close on backdrop click
   document.querySelectorAll('.modal-backdrop').forEach(backdrop => {
     backdrop.addEventListener('click', () => {
-      backdrop.closest('.modal').classList.remove('active');
+      backdrop.closest('.modal')?.classList.remove('active');
     });
   });
 
-  // Close on Escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
@@ -350,7 +345,7 @@ function openCertModal(imageSrc, title, issuer) {
   document.getElementById('certModalImage').src = imageSrc;
   document.getElementById('certModalTitle').textContent = title;
   document.getElementById('certModalIssuer').textContent = issuer || '';
-  modal.classList.add('active');
+  modal?.classList.add('active');
 }
 
 function openProjectModal(projectId) {
@@ -368,16 +363,16 @@ function openProjectModal(projectId) {
       </div>
     ` : ''}
     <div class="project-modal-tags">
-      ${project.techStack.map(t => `<span class="tag">${t}</span>`).join('')}
+      ${project.techStack.map(t => `<span class="project-tag">${t}</span>`).join('')}
     </div>
     <p class="project-modal-desc">${project.description}</p>
     <div class="project-modal-links">
-      ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="btn btn-secondary btn-sm"><i data-lucide="github"></i> GitHub</a>` : ''}
-      ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" class="btn btn-primary btn-sm"><i data-lucide="external-link"></i> Live Demo</a>` : ''}
+      ${project.githubUrl ? `<a href="${project.githubUrl}" target="_blank" class="btn"><i data-lucide="github"></i> GitHub</a>` : ''}
+      ${project.liveUrl ? `<a href="${project.liveUrl}" target="_blank" class="btn btn-primary"><i data-lucide="external-link"></i> Live Demo</a>` : ''}
     </div>
   `;
 
-  modal.classList.add('active');
+  modal?.classList.add('active');
   lucide.createIcons();
 }
 
@@ -386,7 +381,7 @@ function initContactForm() {
   const form = document.getElementById('contactForm');
   const btn = document.getElementById('contactBtn');
 
-  form.addEventListener('submit', async (e) => {
+  form?.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const name = document.getElementById('contactName').value.trim();
@@ -400,8 +395,7 @@ function initContactForm() {
     }
 
     btn.disabled = true;
-    btn.innerHTML = '<i data-lucide="loader-2" class="spin"></i> <span>Sending...</span>';
-    lucide.createIcons();
+    btn.innerHTML = '<span>Sending...</span>';
 
     try {
       const res = await fetch(`${API_URL}/api/contact`, {
@@ -423,14 +417,13 @@ function initContactForm() {
     }
 
     btn.disabled = false;
-    btn.innerHTML = '<i data-lucide="send"></i> <span>Send Message</span>';
-    lucide.createIcons();
+    btn.innerHTML = '<span>Send Message</span>';
   });
 }
 
 // ===== DOWNLOAD RESUME =====
 function initDownloadResume() {
-  document.getElementById('downloadResumeBtn').addEventListener('click', async () => {
+  document.getElementById('downloadResumeBtn')?.addEventListener('click', async () => {
     try {
       const res = await fetch(`${API_URL}/api/resume/download`);
       if (res.ok) {
@@ -458,9 +451,7 @@ function showToast(message, type = 'success') {
   const container = document.getElementById('toast-container');
   const toast = document.createElement('div');
   toast.className = `toast ${type}`;
-
-  const icon = type === 'success' ? '&#10003;' : '&#10007;';
-  toast.innerHTML = `<span>${icon}</span> ${message}`;
+  toast.innerHTML = `<span>${type === 'success' ? '\u2713' : '\u2717'}</span> ${message}`;
 
   container.appendChild(toast);
 
@@ -469,8 +460,3 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 300);
   }, 4000);
 }
-
-// Add spin animation
-const style = document.createElement('style');
-style.textContent = `.spin { animation: spin 1s linear infinite; } @keyframes spin { to { transform: rotate(360deg); } }`;
-document.head.appendChild(style);

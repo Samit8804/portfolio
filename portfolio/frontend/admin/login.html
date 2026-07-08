@@ -36,13 +36,13 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: rgba(var(--accent-blue-rgb), 0.1);
-      border: 1px solid rgba(var(--accent-blue-rgb), 0.15);
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
-      color: var(--accent-blue-light);
+      color: rgba(255,255,255,0.6);
     }
     .login-icon svg { width: 28px; height: 28px; }
     .login-header h2 {
@@ -83,21 +83,21 @@
   </style>
 </head>
 <body>
-  <div class="bg-wrapper">
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="bg-grid"></div>
+  <div class="grain-overlay"></div>
+  <div class="ambient-orbs">
+    <div class="ambient-orb ambient-orb-1"></div>
+    <div class="ambient-orb ambient-orb-2"></div>
   </div>
 
   <div id="toast-container" class="toast-container"></div>
 
   <div class="login-page">
-    <div class="glass-card login-card">
+    <div style="border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:40px;background:var(--bg-card);max-width:420px;width:100%;">
       <div class="login-header">
         <div class="login-icon">
           <i data-lucide="shield"></i>
         </div>
-        <h2>Admin <span class="gradient-text">Login</span></h2>
+        <h2>Admin Login</h2>
         <p>Access your dashboard</p>
       </div>
 

@@ -29,18 +29,20 @@
     <div class="loader-content">
       <div class="loader-spinner"></div>
       <div class="loader-text">
-        <span class="gradient-text">Samit</span> Fartyal
+        Samit Fartyal
       </div>
       <div class="loader-bar"><div class="loader-bar-fill"></div></div>
     </div>
   </div>
 
-  <!-- ===== ANIMATED BACKGROUND ===== -->
-  <div class="bg-wrapper">
-    <div class="bg-blob blob-1"></div>
-    <div class="bg-blob blob-2"></div>
-    <div class="bg-blob blob-3"></div>
-    <div class="bg-grid"></div>
+  <!-- ===== GRAIN OVERLAY ===== -->
+  <div class="grain-overlay"></div>
+
+  <!-- ===== AMBIENT ORBS ===== -->
+  <div class="ambient-orbs">
+    <div class="ambient-orb ambient-orb-1" data-parallax="0.15"></div>
+    <div class="ambient-orb ambient-orb-2" data-parallax="-0.1"></div>
+    <div class="ambient-orb ambient-orb-3" data-parallax="0.08"></div>
   </div>
 
   <!-- ===== TOAST CONTAINER ===== -->
@@ -92,101 +94,34 @@
   <!-- ===== HERO SECTION ===== -->
   <section id="hero" class="hero-section">
     <div class="hero-container">
-      <div class="hero-content" data-animate="fade-right">
-        <div class="hero-badge">
-          <span class="badge-dot"></span>
-          <span>Available for opportunities</span>
-        </div>
-
-        <p class="hero-greeting">Hello, I'm</p>
-
-        <h1 class="hero-name">
-          Samit <span class="gradient-text">Fartyal</span>
-        </h1>
-
-        <div class="hero-role">
-          <span class="role-line"></span>
-          <span id="typingText" class="typing-text"></span>
-          <span class="typing-cursor">|</span>
-        </div>
-
-        <p class="hero-description">
-          Building impactful digital solutions with clean code and creative thinking.
-          Turning complex problems into elegant, user-friendly applications.
-        </p>
-
-        <div class="hero-buttons">
-          <a href="#projects" class="btn btn-primary">
-            <i data-lucide="folder"></i>
-            View Projects
-          </a>
-          <button id="downloadResumeBtn" class="btn btn-secondary">
-            <i data-lucide="download"></i>
-            Download Resume
-          </button>
-        </div>
-
-        <div class="hero-stats">
-          <div class="stat-item">
-            <span class="stat-value">2+</span>
-            <span class="stat-label">Years Exp</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-value">10+</span>
-            <span class="stat-label">Projects</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <span class="stat-value">15+</span>
-            <span class="stat-label">Tech Stack</span>
-          </div>
-        </div>
-
-        <div class="hero-socials">
-          <a href="https://github.com/samitfartyal" target="_blank" class="social-link" aria-label="GitHub">
-            <i data-lucide="github"></i>
-          </a>
-          <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" class="social-link" aria-label="LinkedIn">
-            <i data-lucide="linkedin"></i>
-          </a>
-          <a href="mailto:samitfartyal34@gmail.com" class="social-link" aria-label="Email">
-            <i data-lucide="mail"></i>
-          </a>
-          <a href="https://twitter.com/samitfartyal" target="_blank" class="social-link" aria-label="Twitter">
-            <i data-lucide="twitter"></i>
-          </a>
+      <div class="hero-visual" data-animate="fade-right">
+        <div class="hero-portrait-frame">
+          <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" onerror="this.style.display='none';">
         </div>
       </div>
 
-      <div class="hero-image-wrapper" data-animate="fade-left">
-        <div class="hero-image-container">
-          <div class="hero-image-glow"></div>
-          <div class="hero-image-ring"></div>
-          <div class="hero-image-ring ring-2"></div>
-          <div class="hero-image-dots"></div>
-          <div class="hero-image-bg-blur"></div>
-          <img src="images/profile.png" alt="Samit Fartyal" class="hero-image" id="heroImage" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-          <div class="hero-image-placeholder" style="display:none;">
-            <i data-lucide="user" style="width:80px;height:80px;opacity:0.3;"></i>
-          </div>
-        </div>
+      <div class="hero-text" data-animate="fade-left">
+        <p class="hero-suptitle">Full Stack Developer</p>
 
-        <div class="hero-float-card card-edu" data-animate="fade-up" style="animation-delay: 0.8s;">
-          <div class="float-card-icon blue">
-            <i data-lucide="graduation-cap"></i>
-          </div>
-          <div>
-            <strong>SCRIET</strong>
-            <span>BSc CS (Hons) 2022-26</span>
-          </div>
-        </div>
+        <h1 class="hero-name">
+          Samit
+          <span class="hero-name-line-2">Fartyal</span>
+        </h1>
 
-        <div class="hero-float-card card-status" data-animate="fade-up" style="animation-delay: 1s;">
-          <div class="float-card-icon purple">
-            <i data-lucide="code-2"></i>
-          </div>
-          <span>Problem Solver</span>
+        <p class="hero-role">
+          Building impactful digital solutions with clean code.
+          Turning complex problems into elegant applications.
+        </p>
+
+        <div class="hero-actions">
+          <a href="#projects" class="btn-primary">View Projects</a>
+          <button id="downloadResumeBtn" class="btn-secondary" data-magnetic>Resume</button>
+          <a href="https://github.com/samitfartyal" target="_blank" class="btn-icon" aria-label="GitHub">
+            <i data-lucide="github"></i>
+          </a>
+          <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" class="btn-icon" aria-label="LinkedIn">
+            <i data-lucide="linkedin"></i>
+          </a>
         </div>
       </div>
     </div>
@@ -195,7 +130,7 @@
       <div class="scroll-mouse">
         <div class="scroll-wheel"></div>
       </div>
-      <span>Scroll to explore</span>
+      <span>Scroll</span>
     </div>
   </section>
 
@@ -204,65 +139,50 @@
     <div class="section-container">
       <div class="section-header" data-animate="fade-up">
         <span class="section-tag">About Me</span>
-        <h2 class="section-title">Get to <span class="gradient-text">Know Me</span></h2>
+        <h2 class="section-title">Get to Know Me</h2>
         <p class="section-subtitle">A passionate developer building digital experiences that make a difference.</p>
       </div>
 
       <div class="about-grid">
         <!-- Left Column - Cards -->
         <div class="about-cards" data-animate="fade-right">
-          <div class="glass-card">
-            <div class="card-icon blue">
-              <i data-lucide="user"></i>
-            </div>
-            <h3>Who I Am</h3>
-            <p>I'm Samit Fartyal, a Full Stack Developer with a strong interest in AI and problem-solving. I love building clean, efficient applications that solve real-world problems.</p>
+          <div class="about-card">
+            <p class="about-sub">Who I Am</p>
+            <h3>Samit Fartyal</h3>
+            <p>A Full Stack Developer with a strong interest in AI and problem-solving. I build clean, efficient applications that solve real-world problems.</p>
           </div>
 
-          <div class="glass-card">
-            <div class="card-icon purple">
-              <i data-lucide="graduation-cap"></i>
-            </div>
-            <h3>Education</h3>
-            <div class="edu-item">
-              <div class="edu-header">
-                <strong>SCRIET</strong>
-                <span class="edu-year">2022 - 2026</span>
-              </div>
-              <p>BSc Computer Science (Hons)</p>
-              <div class="edu-tags">
-                <span class="tag">Full Stack</span>
-                <span class="tag">AI/ML</span>
-                <span class="tag">Problem Solving</span>
-              </div>
+          <div class="about-card">
+            <p class="about-sub">Education</p>
+            <h3>SCRIET</h3>
+            <p>BSc Computer Science (Hons) &middot; 2022 &ndash; 2026</p>
+            <div class="about-interests" style="margin-top:8px;">
+              <span class="about-interest">Full Stack</span>
+              <span class="about-interest">AI/ML</span>
+              <span class="about-interest">Problem Solving</span>
             </div>
           </div>
 
-          <div class="glass-card">
-            <div class="card-icon emerald">
-              <i data-lucide="globe"></i>
-            </div>
-            <h3>Interests</h3>
-            <div class="interest-tags">
-              <span class="tag">Web Development</span>
-              <span class="tag">AI/ML</span>
-              <span class="tag">Open Source</span>
-              <span class="tag">Cloud Computing</span>
-              <span class="tag">UI/UX Design</span>
+          <div class="about-card">
+            <p class="about-sub">Interests</p>
+            <h3>What Drives Me</h3>
+            <div class="about-interests">
+              <span class="about-interest">Web Development</span>
+              <span class="about-interest">AI/ML</span>
+              <span class="about-interest">Open Source</span>
+              <span class="about-interest">Cloud Computing</span>
+              <span class="about-interest">UI/UX Design</span>
             </div>
           </div>
         </div>
 
         <!-- Right Column - Skills -->
         <div class="about-skills" data-animate="fade-left">
-          <div class="glass-card skills-card">
-            <div class="card-icon blue">
-              <i data-lucide="monitor"></i>
-            </div>
+          <div class="skills-card">
             <h3>Technical Skills</h3>
 
-            <div class="skill-category">
-              <h4><span class="skill-icon">&#127912;</span> Frontend</h4>
+            <div class="skill-group">
+              <p class="skill-group-header">Frontend</p>
               <div class="skills-grid">
                 <div class="skill-item">
                   <div class="skill-header">
@@ -291,8 +211,8 @@
               </div>
             </div>
 
-            <div class="skill-category">
-              <h4><span class="skill-icon">&#9881;&#65039;</span> Backend</h4>
+            <div class="skill-group">
+              <p class="skill-group-header">Backend</p>
               <div class="skills-grid">
                 <div class="skill-item">
                   <div class="skill-header">
@@ -321,8 +241,8 @@
               </div>
             </div>
 
-            <div class="skill-category">
-              <h4><span class="skill-icon">&#128295;</span> Tools</h4>
+            <div class="skill-group">
+              <p class="skill-group-header">Tools</p>
               <div class="skills-grid">
                 <div class="skill-item">
                   <div class="skill-header">
@@ -361,7 +281,7 @@
     <div class="section-container">
       <div class="section-header" data-animate="fade-up">
         <span class="section-tag">Portfolio</span>
-        <h2 class="section-title">My <span class="gradient-text">Projects</span></h2>
+        <h2 class="section-title">My Projects</h2>
         <p class="section-subtitle">A collection of projects that showcase my skills and passion for building great software.</p>
       </div>
 
@@ -396,7 +316,7 @@
     <div class="section-container">
       <div class="section-header" data-animate="fade-up">
         <span class="section-tag">Achievements</span>
-        <h2 class="section-title">My <span class="gradient-text">Certificates</span></h2>
+        <h2 class="section-title">My Certificates</h2>
         <p class="section-subtitle">Professional certifications and achievements that validate my skills.</p>
       </div>
 
@@ -415,63 +335,47 @@
     <div class="section-container">
       <div class="section-header" data-animate="fade-up">
         <span class="section-tag">Contact</span>
-        <h2 class="section-title">Get In <span class="gradient-text">Touch</span></h2>
+        <h2 class="section-title">Get In Touch</h2>
         <p class="section-subtitle">Have a project in mind or want to collaborate? I'd love to hear from you.</p>
       </div>
 
       <div class="contact-grid">
         <div class="contact-info" data-animate="fade-right">
-          <div class="glass-card contact-info-card">
-            <div class="card-icon blue">
-              <i data-lucide="mail"></i>
-            </div>
+          <div class="contact-info-item">
             <div>
               <h3>Email</h3>
               <a href="mailto:samitfartyal34@gmail.com">samitfartyal34@gmail.com</a>
             </div>
           </div>
 
-          <div class="glass-card contact-info-card">
-            <div class="card-icon emerald">
-              <i data-lucide="map-pin"></i>
-            </div>
+          <div class="contact-info-item">
             <div>
               <h3>Location</h3>
               <p>Uttar Pradesh, India</p>
             </div>
           </div>
 
-          <div class="glass-card contact-info-card">
-            <div class="card-icon purple">
-              <i data-lucide="share-2"></i>
-            </div>
+          <div class="contact-info-item">
             <div>
-              <h3>Connect With Me</h3>
-              <div class="contact-socials">
-                <a href="https://github.com/samitfartyal" target="_blank" class="social-btn">
-                  <i data-lucide="github"></i>
-                </a>
-                <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" class="social-btn">
-                  <i data-lucide="linkedin"></i>
-                </a>
-                <a href="https://twitter.com/samitfartyal" target="_blank" class="social-btn">
-                  <i data-lucide="twitter"></i>
-                </a>
+              <h3>Connect</h3>
+              <div style="display:flex;gap:8px;margin-top:6px;">
+                <a href="https://github.com/samitfartyal" target="_blank" style="color:var(--text-secondary);transition:var(--transition-base);" aria-label="GitHub"><i data-lucide="github" style="width:16px;height:16px;"></i></a>
+                <a href="https://www.linkedin.com/in/samit-fartyal-824058332" target="_blank" style="color:var(--text-secondary);transition:var(--transition-base);" aria-label="LinkedIn"><i data-lucide="linkedin" style="width:16px;height:16px;"></i></a>
+                <a href="https://twitter.com/samitfartyal" target="_blank" style="color:var(--text-secondary);transition:var(--transition-base);" aria-label="Twitter"><i data-lucide="twitter" style="width:16px;height:16px;"></i></a>
               </div>
             </div>
           </div>
 
-          <div class="glass-card contact-info-card availability-card">
-            <div class="availability-dot"></div>
+          <div class="contact-info-item">
             <div>
               <h3>Availability</h3>
-              <p>Open for freelance & full-time opportunities</p>
+              <p>Open for freelance &amp; full-time opportunities</p>
             </div>
           </div>
         </div>
 
         <div class="contact-form-wrapper" data-animate="fade-left">
-          <form id="contactForm" class="glass-card contact-form">
+          <form id="contactForm" class="contact-form">
             <h3>Send a Message</h3>
             <p class="form-desc">Fill out the form below and I'll get back to you soon.</p>
 
@@ -500,8 +404,7 @@
               <div class="input-line"></div>
             </div>
 
-            <button type="submit" class="btn btn-primary btn-full" id="contactBtn">
-              <i data-lucide="send"></i>
+            <button type="submit" class="form-submit" id="contactBtn">
               <span>Send Message</span>
             </button>
           </form>
