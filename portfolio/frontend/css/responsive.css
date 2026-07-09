@@ -13,6 +13,8 @@
   .section { padding: 80px 0; }
   .section-container { padding: 0 24px; }
   .nav-container { padding: 0 20px; }
+
+  .hero-portrait-img { height: min(60vh, 55vw); }
 }
 
 @media (max-width: 768px) {
@@ -30,15 +32,21 @@
   .hero-actions { bottom: 48px; gap: 20px; }
   .hero-action-btn { font-size: 0.6875rem; }
 
+  .hero-portrait-img { height: min(55vh, 60vw); }
+
   .projects-grid { grid-template-columns: 1fr; }
   .certificates-grid { grid-template-columns: 1fr; }
   .projects-toolbar { flex-direction: column; align-items: stretch; }
   .search-box { min-width: 0; }
 
-  .section-title { font-size: 1.75rem; }
+  .section { padding: 60px 0; }
+  .section-container { padding: 0 20px; }
+  .section-header { margin-bottom: 40px; }
+  .section-title { font-size: clamp(1.5rem, 5vw, 2rem); }
 
   .footer-links { flex-wrap: wrap; gap: 16px; }
   .footer-bottom { flex-direction: column; gap: 12px; text-align: center; }
+  .footer { padding: 40px 0 24px; }
 }
 
 @media (max-width: 480px) {
@@ -47,4 +55,23 @@
   .hero-edge-tr { display: none; }
   .hero-edge-br { bottom: 64px; }
   .hero-actions { bottom: 36px; gap: 16px; }
+  .hero-scroll-indicator { display: none; }
+
+  .hero-portrait-img { height: min(45vh, 70vw); }
+
+  .section { padding: 40px 0; }
+  .section-container { padding: 0 16px; }
+  .section-header { margin-bottom: 28px; }
+
+  .project-card-image { height: 160px; }
+  .project-card-body { padding: 16px; }
+
+  .cert-card-image { height: 140px; }
+
+  .contact-form { padding: 20px; }
+  .contact-info-item { padding: 14px; }
+  .form-group input, .form-group textarea { padding: 10px 14px; }
+
+  .footer { padding: 32px 0 20px; }
+  .footer-socials a { width: 32px; height: 32px; }
 }
