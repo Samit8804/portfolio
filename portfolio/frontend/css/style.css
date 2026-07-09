@@ -182,7 +182,8 @@
   --scrollbar-color: rgba(200, 200, 208, 0.15);
 }
 
-[data-theme="light"] { --bg: #f5f5f5; --bg-gradient: radial-gradient(ellipse at 30% 20%, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%); --bg-secondary: #eee; --text-primary: #111; --text-secondary: rgba(0,0,0,0.6); --text-muted: rgba(0,0,0,0.3); --bg-card: rgba(0,0,0,0.02); --bg-card-hover: rgba(0,0,0,0.04); }
+[data-theme="dark"] { --bg: #000000; --text-primary: #ffffff; --text-secondary: rgba(255,255,255,0.6); --text-muted: rgba(255,255,255,0.3); --bg-card: rgba(255,255,255,0.02); --bg-card-hover: rgba(255,255,255,0.04); }
+[data-theme="light"] { --bg: #f5f5f5; --bg-gradient: radial-gradient(ellipse at 30% 20%, #ffffff 0%, #f0f0f0 50%, #e8e8e8 100%); --bg-secondary: #eee; --text-primary: #0a0a0a; --text-secondary: rgba(0,0,0,0.65); --text-muted: rgba(0,0,0,0.35); --bg-card: rgba(0,0,0,0.02); --bg-card-hover: rgba(0,0,0,0.04); }
 [data-theme="light"] .theme-icon-dark { display: none; }
 [data-theme="light"] .theme-icon-light { display: block; }
 
@@ -196,6 +197,7 @@ html {
   scroll-behavior: smooth;
   font-size: 16px;
   cursor: none;
+  background: #000;
 }
 
 body {
@@ -1231,5 +1233,5 @@ input, textarea { font-family: inherit; font-size: inherit; }
 }
 
 html.theme-transitioning, html.theme-transitioning *, html.theme-transitioning *::before, html.theme-transitioning *::after {
-  transition: background-color 0.8s ease, color 0.8s ease, border-color 0.8s ease !important;
+  transition: background-color 0.7s ease, color 0.7s ease, border-color 0.7s ease, background 0.7s ease !important;
 }
