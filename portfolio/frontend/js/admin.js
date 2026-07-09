@@ -10,8 +10,35 @@ if (!TOKEN) {
   window.location.href = 'login.html';
 }
 
+// ===== CURSOR =====
+function initAdminCursor() {
+  var d = document.createElement('div'); d.className = 'cursor-dot';
+  var r = document.createElement('div'); r.className = 'cursor-ring';
+  document.body.appendChild(d); document.body.appendChild(r);
+
+  var mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', function(e) {
+    mx = e.clientX; my = e.clientY;
+    d.style.left = mx + 'px'; d.style.top = my + 'px';
+  });
+
+  function anim() {
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    r.style.left = rx + 'px'; r.style.top = ry + 'px';
+    requestAnimationFrame(anim);
+  }
+  anim();
+
+  document.querySelectorAll('a, button, input, textarea, select').forEach(function(el) {
+    el.addEventListener('mouseenter', function() { r.classList.add('hover'); });
+    el.addEventListener('mouseleave', function() { r.classList.remove('hover'); });
+  });
+}
+
 // ===== INIT =====
 document.addEventListener('DOMContentLoaded', () => {
+  initAdminCursor();
   initTabs();
   initSidebar();
   initLogout();

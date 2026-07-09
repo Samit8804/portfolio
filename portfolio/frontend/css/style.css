@@ -220,7 +220,6 @@ input, textarea { font-family: inherit; font-size: inherit; }
   z-index: 99999;
   transform: translate(-50%, -50%);
   transition: width 0.15s, height 0.15s, background 0.15s;
-  mix-blend-mode: difference;
 }
 .cursor-ring {
   position: fixed;
@@ -232,7 +231,6 @@ input, textarea { font-family: inherit; font-size: inherit; }
   z-index: 99998;
   transform: translate(-50%, -50%);
   transition: width 0.3s, height 0.3s, border-color 0.3s, background 0.3s;
-  mix-blend-mode: difference;
   opacity: 0.4;
 }
 .cursor-ring.hover {
