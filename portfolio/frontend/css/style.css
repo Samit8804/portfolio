@@ -10,7 +10,7 @@
   --ambient-1: rgba(255, 255, 255, 0.08);
   --ambient-2: rgba(255, 255, 255, 0.04);
   --ambient-3: rgba(255, 255, 255, 0.04);
-  --text-tint: rgba(255, 255, 255, 0.06);
+  --text-tint: rgba(255, 255, 255, 0.08);
   --accent: #ffffff;
   --accent-rgb: 255, 255, 255;
   --accent-soft: rgba(255, 255, 255, 0.15);
@@ -36,7 +36,7 @@
   --ambient-1: rgba(200, 200, 200, 0.2);
   --ambient-2: rgba(150, 150, 150, 0.08);
   --ambient-3: rgba(100, 100, 100, 0.05);
-  --text-tint: rgba(220, 220, 220, 0.12);
+  --text-tint: rgba(220, 220, 220, 0.15);
   --accent: #e0e0e0;
   --accent-rgb: 220, 220, 220;
   --accent-soft: rgba(220, 220, 220, 0.15);
@@ -51,7 +51,7 @@
   --ambient-1: rgba(30, 100, 220, 0.25);
   --ambient-2: rgba(60, 140, 255, 0.1);
   --ambient-3: rgba(20, 80, 200, 0.06);
-  --text-tint: rgba(100, 170, 255, 0.12);
+  --text-tint: rgba(100, 170, 255, 0.15);
   --accent: #6aaeff;
   --accent-rgb: 106, 174, 255;
   --accent-soft: rgba(106, 174, 255, 0.15);
@@ -66,7 +66,7 @@
   --ambient-1: rgba(16, 160, 100, 0.2);
   --ambient-2: rgba(50, 200, 140, 0.08);
   --ambient-3: rgba(10, 120, 80, 0.05);
-  --text-tint: rgba(100, 220, 170, 0.12);
+  --text-tint: rgba(100, 220, 170, 0.15);
   --accent: #64d4a0;
   --accent-rgb: 100, 212, 160;
   --accent-soft: rgba(100, 212, 160, 0.15);
@@ -81,7 +81,7 @@
   --ambient-1: rgba(139, 115, 85, 0.3);
   --ambient-2: rgba(212, 197, 176, 0.12);
   --ambient-3: rgba(180, 160, 140, 0.06);
-  --text-tint: rgba(212, 197, 176, 0.12);
+  --text-tint: rgba(212, 197, 176, 0.15);
   --accent: #d4c5b0;
   --accent-rgb: 212, 197, 176;
   --accent-soft: rgba(212, 197, 176, 0.15);
@@ -96,7 +96,7 @@
   --ambient-1: rgba(130, 70, 220, 0.25);
   --ambient-2: rgba(170, 120, 255, 0.1);
   --ambient-3: rgba(100, 50, 200, 0.06);
-  --text-tint: rgba(180, 140, 255, 0.12);
+  --text-tint: rgba(180, 140, 255, 0.15);
   --accent: #b48cff;
   --accent-rgb: 180, 140, 255;
   --accent-soft: rgba(180, 140, 255, 0.15);
@@ -111,7 +111,7 @@
   --ambient-1: rgba(160, 40, 50, 0.25);
   --ambient-2: rgba(200, 80, 90, 0.1);
   --ambient-3: rgba(120, 30, 40, 0.06);
-  --text-tint: rgba(220, 130, 130, 0.12);
+  --text-tint: rgba(220, 130, 130, 0.15);
   --accent: #d48080;
   --accent-rgb: 212, 128, 128;
   --accent-soft: rgba(212, 128, 128, 0.15);
@@ -126,7 +126,7 @@
   --ambient-1: rgba(200, 160, 60, 0.25);
   --ambient-2: rgba(240, 210, 120, 0.1);
   --ambient-3: rgba(180, 140, 40, 0.06);
-  --text-tint: rgba(240, 215, 140, 0.12);
+  --text-tint: rgba(240, 215, 140, 0.15);
   --accent: #f0d78c;
   --accent-rgb: 240, 215, 140;
   --accent-soft: rgba(240, 215, 140, 0.15);
@@ -141,7 +141,7 @@
   --ambient-1: rgba(200, 80, 120, 0.2);
   --ambient-2: rgba(240, 140, 180, 0.08);
   --ambient-3: rgba(180, 60, 100, 0.05);
-  --text-tint: rgba(240, 160, 190, 0.12);
+  --text-tint: rgba(240, 160, 190, 0.15);
   --accent: #f0a0bc;
   --accent-rgb: 240, 160, 188;
   --accent-soft: rgba(240, 160, 188, 0.15);
@@ -607,25 +607,15 @@ input, textarea { font-family: inherit; font-size: inherit; }
 }
 .hero-center:hover::before { opacity: 1; }
 
-.hero-portrait {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 0;
-  transition: transform 0.5s ease;
-}
-.hero-center:hover .hero-portrait {
-  transform: scale(1.03);
-}
-.hero-portrait img {
+.hero-portrait-img {
   display: block;
-  max-height: min(68vh, 65vw);
+  height: min(72vh, 70vw);
   width: auto;
   filter: grayscale(100%) contrast(1.15) drop-shadow(0 0 80px var(--accent-glow));
   opacity: 0.7;
   transition: filter 0.6s ease, transform 0.6s ease, opacity 0.6s ease;
 }
-.hero-center:hover .hero-portrait img {
+.hero-center:hover .hero-portrait-img {
   filter: grayscale(0%) contrast(1) drop-shadow(0 0 120px var(--accent-soft)) drop-shadow(0 0 60px var(--accent-glow));
   opacity: 1;
   transform: scale(1.04);
