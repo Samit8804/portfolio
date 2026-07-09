@@ -1,6 +1,5 @@
 @media (max-width: 1024px) {
   .hero-bg-type { font-size: clamp(5rem, 16vw, 10rem); }
-  .hero-portrait { width: min(50vh, 50vw); height: min(50vh, 50vw); }
   .hero-edge-tl { top: 80px; left: 24px; }
   .hero-edge-tr { top: 80px; right: 24px; }
   .hero-edge-bl { bottom: 24px; left: 24px; }
@@ -23,7 +22,6 @@
   .mobile-menu { display: flex; }
 
   .hero-bg-type { font-size: clamp(4rem, 14vw, 7rem); }
-  .hero-portrait { width: min(45vh, 60vw); height: min(45vh, 60vw); }
   .hero-edge-tl { top: 72px; left: 16px; }
   .hero-edge-tr { top: 72px; right: 16px; }
   .hero-edge-bl { display: none; }
@@ -45,7 +43,6 @@
 
 @media (max-width: 480px) {
   .hero-bg-type { font-size: clamp(2.8rem, 12vw, 4rem); }
-  .hero-portrait { width: min(40vh, 70vw); height: min(40vh, 70vw); }
   .hero-edge-tl { display: none; }
   .hero-edge-tr { display: none; }
   .hero-edge-br { bottom: 64px; }
