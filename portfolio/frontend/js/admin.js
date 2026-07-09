@@ -457,7 +457,7 @@ async function loadMessages() {
 
     if (data.success && data.messages.length > 0) {
       tbody.innerHTML = data.messages.map(m => `
-        <tr style="${m.read ? '' : 'background:rgba(255,255,255,0.02)'}">
+        <tr style="${m.read ? '' : 'background:var(--bg-card)'}">
           <td class="table-title">${m.name}</td>
           <td>${m.email}</td>
           <td>${m.subject || '-'}</td>
@@ -542,7 +542,7 @@ function previewTheme(theme) {
 
   document.querySelectorAll('.theme-preview').forEach(function(el) {
     el.style.borderColor = el.dataset.accentTheme === theme
-      ? 'rgba(255,255,255,0.3)'
+      ? 'var(--accent)'
       : 'transparent';
   });
 }

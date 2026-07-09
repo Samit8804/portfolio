@@ -10,10 +10,10 @@
 /* Sidebar */
 .sidebar {
   width: 260px;
-  background: rgba(0, 0, 0, 0.95);
+  background: var(--bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border-right: 1px solid rgba(255,255,255,0.04);
+  border-right: 1px solid var(--border-accent);
   display: flex;
   flex-direction: column;
   position: fixed;
@@ -25,12 +25,12 @@
 }
 
 [data-theme="light"] .sidebar {
-  background: rgba(255, 255, 255, 0.95);
+  background: var(--bg);
 }
 
 .sidebar-header {
   padding: 20px 20px;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--border-accent);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -40,9 +40,9 @@
   font-size: 0.6875rem;
   padding: 3px 10px;
   border-radius: 999px;
-  background: rgba(255, 255, 255, 0.1);
-  color: rgba(255,255,255,0.8);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: var(--nav-active-bg);
+  color: var(--text-secondary);
+  border: 1px solid var(--border-accent);
   font-weight: 600;
 }
 
@@ -72,18 +72,18 @@
 
 .sidebar-link:hover {
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--nav-active-bg);
 }
 
 .sidebar-link.active {
-  color: white;
-  background: linear-gradient(135deg, #fff, #ddd);
-  box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+  color: var(--bg);
+  background: var(--accent);
+  box-shadow: 0 4px 15px var(--accent-glow);
 }
 
 .sidebar-footer {
   padding: 16px;
-  border-top: 1px solid rgba(255,255,255,0.06);
+  border-top: 1px solid var(--border-accent);
 }
 
 .sidebar-user {
@@ -97,11 +97,11 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #fff, #ddd);
+  background: linear-gradient(135deg, var(--accent), var(--accent-soft));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: var(--bg);
   font-weight: 700;
   font-size: 0.875rem;
   flex-shrink: 0;
@@ -145,8 +145,8 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
-  background: rgba(255,255,255,0.02);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
   align-items: center;
   justify-content: center;
   color: var(--text-primary);
@@ -167,7 +167,7 @@
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-accent);
   border-radius: var(--radius-xl);
   padding: 28px;
   margin-bottom: 24px;
@@ -185,8 +185,8 @@
 .admin-select {
   width: 100%;
   padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
   border-radius: var(--radius-md);
   color: var(--text-primary);
   font-size: 0.9375rem;
@@ -196,8 +196,8 @@
 }
 
 .admin-select:focus {
-  border-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.08);
+  border-color: rgba(var(--accent-rgb), 0.4);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.08);
 }
 
 .admin-select option {
@@ -209,7 +209,7 @@
 .file-upload-area {
   position: relative;
   padding: 32px;
-  border: 2px dashed rgba(255,255,255,0.06);
+  border: 2px dashed var(--border-accent);
   border-radius: var(--radius-lg);
   text-align: center;
   color: var(--text-muted);
@@ -218,8 +218,8 @@
 }
 
 .file-upload-area:hover {
-  border-color: rgba(255, 255, 255, 0.3);
-  background: rgba(255, 255, 255, 0.03);
+  border-color: rgba(var(--accent-rgb), 0.3);
+  background: var(--bg-card-hover);
 }
 
 .file-upload-area svg { width: 32px; height: 32px; margin: 0 auto 8px; }
@@ -244,7 +244,7 @@
   height: 80px;
   border-radius: var(--radius-sm);
   overflow: visible;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-accent);
   position: relative;
 }
 .image-preview img {
@@ -261,7 +261,7 @@
   border-radius: 50%;
   border: none;
   background: #ef4444;
-  color: #fff;
+  color: var(--text-primary);
   font-size: 14px;
   line-height: 1;
   cursor: pointer;
@@ -284,7 +284,7 @@
   background: var(--bg-card);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-accent);
   border-radius: var(--radius-xl);
   overflow: hidden;
 }
@@ -295,7 +295,7 @@
 }
 
 .admin-table thead {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--nav-active-bg);
 }
 
 .admin-table th {
@@ -306,19 +306,19 @@
   text-align: left;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  border-bottom: 1px solid var(--border-accent);
 }
 
 .admin-table td {
   padding: 12px 16px;
   font-size: 0.875rem;
   color: var(--text-secondary);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--border-accent);
   vertical-align: middle;
 }
 
 .admin-table tbody tr:hover td {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-card-hover);
 }
 
 .table-thumb {
@@ -326,15 +326,15 @@
   height: 48px;
   border-radius: var(--radius-sm);
   object-fit: cover;
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-accent);
 }
 
 .table-thumb-placeholder {
   width: 48px;
   height: 48px;
   border-radius: var(--radius-sm);
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -382,11 +382,11 @@
 
 .table-action-btn.view {
   color: var(--text-secondary);
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--bg-card-hover);
 }
 
 .table-action-btn.view:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--nav-active-bg);
 }
 
 /* Resume Stats */
@@ -398,8 +398,8 @@
 
 .resume-stat {
   padding: 16px 20px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255,255,255,0.06);
+  background: var(--bg-card);
+  border: 1px solid var(--border-accent);
   border-radius: var(--radius-md);
 }
 
@@ -436,10 +436,10 @@
   color: var(--text-secondary);
   line-height: 1.7;
   white-space: pre-wrap;
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--bg-card);
   padding: 16px;
   border-radius: var(--radius-md);
-  border: 1px solid rgba(255,255,255,0.06);
+  border: 1px solid var(--border-accent);
 }
 
 /* Responsive */

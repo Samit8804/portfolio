@@ -36,13 +36,13 @@
       width: 56px;
       height: 56px;
       border-radius: 16px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.06);
+      background: var(--bg-card);
+      border: 1px solid var(--border-accent);
       display: flex;
       align-items: center;
       justify-content: center;
       margin: 0 auto 16px;
-      color: rgba(255,255,255,0.6);
+      color: var(--text-secondary);
     }
     .login-icon svg { width: 28px; height: 28px; }
     .login-header h2 {
@@ -92,7 +92,7 @@
   <div id="toast-container" class="toast-container"></div>
 
   <div class="login-page">
-    <div style="border:1px solid rgba(255,255,255,0.04);border-radius:var(--radius-lg);padding:40px;background:var(--bg-card);max-width:420px;width:100%;">
+    <div style="border:1px solid var(--border-accent);border-radius:var(--radius-lg);padding:40px;background:var(--bg-card);max-width:420px;width:100%;">
       <div class="login-header">
         <div class="login-icon">
           <i data-lucide="shield"></i>
@@ -136,6 +136,18 @@
     if (localStorage.getItem('adminToken')) {
       window.location.href = 'dashboard.html';
     }
+
+    // Cursor
+    (function() {
+      var d = document.createElement('div'); d.className = 'cursor-dot';
+      var r = document.createElement('div'); r.className = 'cursor-ring';
+      document.body.appendChild(d); document.body.appendChild(r);
+      var mx = 0, my = 0, rx = 0, ry = 0;
+      document.addEventListener('mousemove', function(e) { mx = e.clientX; my = e.clientY; d.style.left = mx + 'px'; d.style.top = my + 'px'; });
+      function anim() { rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12; r.style.left = rx + 'px'; r.style.top = ry + 'px'; requestAnimationFrame(anim); }
+      anim();
+      document.querySelectorAll('a, button, input').forEach(function(el) { el.addEventListener('mouseenter', function() { r.classList.add('hover'); }); el.addEventListener('mouseleave', function() { r.classList.remove('hover'); }); });
+    })();
 
     document.getElementById('loginForm').addEventListener('submit', async (e) => {
       e.preventDefault();
