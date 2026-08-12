@@ -16,7 +16,7 @@ const Contact = require('../backend/models/Contact');
 const Admin = require('../backend/models/Admin');
 const Resume = require('../backend/models/Resume');
 
-const { uploadProjectImages, uploadResume } = require('../backend/middleware/upload');
+const { uploadProjectImages, uploadCertificateImage, uploadResume } = require('../backend/middleware/upload');
 
 const app = express();
 
@@ -265,14 +265,22 @@ app.get('/api/certificates', async (req, res) => {
   }
 });
 
-app.post('/api/certificates', protect, async (req, res) => {
-  try {
-    const { title, issuer, date, credentialUrl } = req.body;
-    const certificate = await Certificate.create({ title, issuer, date: date || Date.now(), credentialUrl });
-    res.status(201).json({ success: true, certificate });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
+app.post('/api/certificates', protect, (req, res) => {
+  uploadCertificateImage(req, res, async (err) => {
+    if (err) {
+      return res.status(400).json({ success: false, message: err.message });
+    }
+    try {
+      const { title, issuer, date, credentialUrl } = req.body;
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Certificate image is required' });
+      }
+      const certificate = await Certificate.create({ title, issuer, date: date || Date.now(), credentialUrl, image: req.file.path || `/uploads/certificates/${req.file.filename}` });
+      res.status(201).json({ success: true, certificate });
+    } catch (err) {
+      res.status(500).json({ success: false, message: err.message });
+    }
+  });
 });
 
 app.delete('/api/certificates/:id', protect, async (req, res) => {

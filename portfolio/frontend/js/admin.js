@@ -10,6 +10,21 @@ if (!TOKEN) {
   window.location.href = 'login.html';
 }
 
+// Auth-aware fetch: on 401 (expired/invalid token) clear the stale token and redirect to login
+async function apiFetch(url, options = {}) {
+  options.headers = { ...(options.headers || {}), 'Authorization': `Bearer ${TOKEN}` };
+  const res = await fetch(url, options);
+  if (res.status === 401) {
+    localStorage.removeItem('adminToken');
+    localStorage.removeItem('adminName');
+    if (typeof showToast === 'function') {
+      showToast('Session expired. Please log in again.', 'error');
+    }
+    setTimeout(() => { window.location.href = 'login.html'; }, 1200);
+  }
+  return res;
+}
+
 // ===== CURSOR =====
 function initAdminCursor() {
   var d = document.createElement('div'); d.className = 'cursor-dot';
@@ -140,9 +155,8 @@ function initForms() {
 
     try {
       const url = isEdit ? `${API_URL}/api/projects/${projectId}` : `${API_URL}/api/projects`;
-      const res = await fetch(url, {
+      const res = await apiFetch(url, {
         method: isEdit ? 'PUT' : 'POST',
-        headers: { 'Authorization': `Bearer ${TOKEN}` },
         body: formData
       });
 
@@ -169,9 +183,8 @@ function initForms() {
     const formData = new FormData(e.target);
 
     try {
-      const res = await fetch(`${API_URL}/api/certificates`, {
+      const res = await apiFetch(`${API_URL}/api/certificates`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${TOKEN}` },
         body: formData
       });
 
@@ -196,9 +209,8 @@ function initForms() {
     const formData = new FormData(e.target);
 
     try {
-      const res = await fetch(`${API_URL}/api/resume/upload`, {
+      const res = await apiFetch(`${API_URL}/api/resume/upload`, {
         method: 'POST',
-        headers: { 'Authorization': `Bearer ${TOKEN}` },
         body: formData
       });
 
@@ -220,9 +232,8 @@ function initForms() {
     if (!confirm('Delete resume? The static backup will still be available for download.')) return;
 
     try {
-      const res = await fetch(`${API_URL}/api/resume`, {
-        method: 'DELETE',
-        headers: { 'Authorization': `Bearer ${TOKEN}` }
+      const res = await apiFetch(`${API_URL}/api/resume`, {
+        method: 'DELETE'
       });
 
       const data = await res.json();
@@ -347,9 +358,8 @@ async function deleteProject(id, title) {
   if (!confirm(`Delete "${title}"?`)) return;
 
   try {
-    const res = await fetch(`${API_URL}/api/projects/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
+    const res = await apiFetch(`${API_URL}/api/projects/${id}`, {
+      method: 'DELETE'
     });
 
     const data = await res.json();
@@ -401,9 +411,8 @@ async function deleteCert(id, title) {
   if (!confirm(`Delete "${title}"?`)) return;
 
   try {
-    const res = await fetch(`${API_URL}/api/certificates/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
+    const res = await apiFetch(`${API_URL}/api/certificates/${id}`, {
+      method: 'DELETE'
     });
 
     const data = await res.json();
@@ -423,9 +432,7 @@ async function loadResumeStats() {
   const container = document.getElementById('resumeStats');
 
   try {
-    const res = await fetch(`${API_URL}/api/resume/stats`, {
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
-    });
+    const res = await apiFetch(`${API_URL}/api/resume/stats`);
     const data = await res.json();
 
     if (data.success) {
@@ -450,9 +457,7 @@ async function loadMessages() {
   const tbody = document.getElementById('messagesTableBody');
 
   try {
-    const res = await fetch(`${API_URL}/api/contact`, {
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
-    });
+    const res = await apiFetch(`${API_URL}/api/contact`);
     const data = await res.json();
 
     if (data.success && data.messages.length > 0) {
@@ -499,9 +504,8 @@ function viewMessage(msg) {
   modal.classList.add('active');
 
   // Mark as read
-  fetch(`${API_URL}/api/contact/${msg._id}/read`, {
-    method: 'PUT',
-    headers: { 'Authorization': `Bearer ${TOKEN}` }
+  apiFetch(`${API_URL}/api/contact/${msg._id}/read`, {
+    method: 'PUT'
   });
 }
 
@@ -513,9 +517,8 @@ async function deleteMessage(id) {
   if (!confirm('Delete this message?')) return;
 
   try {
-    const res = await fetch(`${API_URL}/api/contact/${id}`, {
-      method: 'DELETE',
-      headers: { 'Authorization': `Bearer ${TOKEN}` }
+    const res = await apiFetch(`${API_URL}/api/contact/${id}`, {
+      method: 'DELETE'
     });
 
     const data = await res.json();
