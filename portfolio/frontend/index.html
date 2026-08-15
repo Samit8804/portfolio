@@ -118,7 +118,7 @@
     </div>
 
     <div class="hero-center" id="heroCenter">
-      <!-- Frame Animation Container -->
+      <!-- Frame Animation Container - Pin to viewport during scroll -->
       <div class="hero-frame-container" id="heroFrameContainer">
         <!-- Black & White Base Layer -->
         <div class="hero-frame-layer hero-frame-bw" id="heroFrameBW">
@@ -133,7 +133,7 @@
       <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" class="hero-portrait-img" style="display:none;" onerror="this.style.display='none';">
     </div>
 
-    <!-- Front text layer (covers portrait in idle, fades on hover) -->
+    <!-- Front text layer (covers portrait in idle, fades based on scroll progress) -->
     <div class="hero-bg-type hero-bg-type-front" aria-hidden="true">SAMIT FARTYAL</div>
 
     <div class="hero-actions">
@@ -144,6 +144,12 @@
     <div class="hero-scroll-indicator">
       <span class="hero-scroll-text">Scroll</span>
       <div class="hero-scroll-line"></div>
+    </div>
+
+    <!-- Scroll progress indicator for debugging (remove in production) -->
+    <div class="hero-scroll-progress" id="heroScrollProgress" aria-hidden="true">
+      <span class="scroll-progress-text">Frame: <span id="currentFrameNum">1</span> / 16</span>
+      <div class="scroll-progress-bar"><div class="scroll-progress-fill" id="scrollProgressFill"></div></div>
     </div>
   </section>
 

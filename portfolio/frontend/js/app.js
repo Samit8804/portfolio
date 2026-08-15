@@ -462,19 +462,22 @@ function showToast(message, type = 'success') {
   }, 4000);
 }
 
-// ===== HERO ANIMATION & SPOTLIGHT =====
+// ===== HERO ANIMATION & SPOTLIGHT (SCROLL-CONTROLLED) =====
 function initHeroAnimation() {
+  const heroSection = document.getElementById('hero');
   const container = document.getElementById('heroFrameContainer');
   const bwLayer = document.getElementById('heroFrameBW');
   const colorLayer = document.getElementById('heroFrameColor');
   const bwImg = document.getElementById('heroFrameImgBW');
   const colorImg = document.getElementById('heroFrameImgColor');
-  const fallbackImg = document.getElementById('heroImage');
-  const heroCenter = document.getElementById('heroCenter');
+  const frontText = document.querySelector('.hero-bg-type-front');
+  const scrollIndicator = document.querySelector('.hero-scroll-indicator');
+  const scrollProgressFill = document.getElementById('scrollProgressFill');
+  const currentFrameNum = document.getElementById('currentFrameNum');
 
-  if (!container || !bwLayer || !colorLayer) return;
+  if (!container || !bwLayer || !colorLayer || !heroSection) return;
 
-  // Frame sequence
+  // Frame sequence - 16 frames
   const frames = [
     'images/frame_001.jpg', 'images/frame_002.jpg', 'images/frame_003.jpg', 'images/frame_004.jpg',
     'images/frame_005.jpg', 'images/frame_006.jpg', 'images/frame_007.jpg', 'images/frame_008.jpg',
@@ -482,12 +485,14 @@ function initHeroAnimation() {
     'images/frame_013.jpg', 'images/frame_014.jpg', 'images/frame_015.jpg', 'images/frame_016.jpg'
   ];
 
+  const totalFrames = frames.length;
   let currentFrame = 0;
-  let animationTimer = null;
-  let isAnimating = false;
-  let isHovering = false;
+  let isScrolling = false;
   let mouseX = 50;
   let mouseY = 50;
+  let heroPinStart = 0;
+  let heroPinEnd = 0;
+  let heroPinned = false;
 
   // Preload all frames
   const preloadedImages = [];
@@ -499,46 +504,96 @@ function initHeroAnimation() {
 
   // Update frame images
   function updateFrame(frameIndex) {
-    if (frameIndex >= 0 && frameIndex < frames.length) {
+    if (frameIndex >= 0 && frameIndex < totalFrames) {
       bwImg.src = frames[frameIndex];
       colorImg.src = frames[frameIndex];
       currentFrame = frameIndex;
+      if (currentFrameNum) currentFrameNum.textContent = frameIndex + 1;
     }
   }
 
-  // Start frame animation
-  function startAnimation() {
-    if (isAnimating) return;
-    isAnimating = true;
-    isHovering = true;
-    colorLayer.classList.add('reveal-active');
-
-    // Animate through frames
-    animationTimer = setInterval(() => {
-      currentFrame = (currentFrame + 1) % frames.length;
-      updateFrame(currentFrame);
-    }, 120); // ~8.3 fps for smooth animation through 16 frames
+  // Calculate hero pin boundaries
+  function calculatePinBounds() {
+    const heroRect = heroSection.getBoundingClientRect();
+    const viewportHeight = window.innerHeight;
+    heroPinStart = window.scrollY + heroRect.top;
+    // Pin for 16 * 1.5 = 24 viewport heights worth of scroll
+    const pinDuration = viewportHeight * 24;
+    heroPinEnd = heroPinStart + pinDuration;
   }
 
-  // Stop frame animation, hold on last frame
-  function stopAnimation() {
-    isAnimating = false;
-    isHovering = false;
-    if (animationTimer) {
-      clearInterval(animationTimer);
-      animationTimer = null;
-    }
-    // Fade out color layer
-    colorLayer.classList.remove('reveal-active');
-    // Reset to first frame after a delay
-    setTimeout(() => {
-      if (!isHovering) {
-        updateFrame(0);
+  // Update frame based on scroll position
+  function updateFrameFromScroll() {
+    const scrollY = window.scrollY;
+    const viewportHeight = window.innerHeight;
+    const heroRect = heroSection.getBoundingClientRect();
+
+    // Check if we're in the pin zone
+    const pinStart = heroPinStart;
+    const pinEnd = heroPinEnd;
+
+    if (scrollY >= pinStart && scrollY <= pinEnd) {
+      // We're in the pinned zone
+      if (!heroPinned) {
+        heroPinned = true;
+        heroSection.classList.add('hero-pinned');
+        document.body.style.overflow = 'hidden'; // Prevent body scroll during pin
       }
-    }, 1000);
+
+      // Calculate progress (0 to 1) through the pin zone
+      const progress = (scrollY - pinStart) / (pinEnd - pinStart);
+      const clampedProgress = Math.max(0, Math.min(1, progress));
+
+      // Map progress to frame index (0 to totalFrames-1)
+      const frameIndex = Math.floor(clampedProgress * (totalFrames - 1));
+      updateFrame(frameIndex);
+
+      // Fade out front text based on progress
+      if (frontText) {
+        if (clampedProgress > 0.15) {
+          frontText.classList.add('fade-out');
+        } else {
+          frontText.classList.remove('fade-out');
+        }
+      }
+
+      // Hide scroll indicator after initial scroll
+      if (scrollIndicator && clampedProgress > 0.05) {
+        scrollIndicator.classList.add('hidden');
+      } else if (scrollIndicator) {
+        scrollIndicator.classList.remove('hidden');
+      }
+
+      // Update scroll progress bar
+      if (scrollProgressFill) {
+        scrollProgressFill.style.width = `${clampedProgress * 100}%`;
+      }
+    } else if (scrollY < pinStart) {
+      // Before pin zone - show first frame
+      if (heroPinned) {
+        heroPinned = false;
+        heroSection.classList.remove('hero-pinned');
+        document.body.style.overflow = '';
+      }
+      updateFrame(0);
+      if (frontText) frontText.classList.remove('fade-out');
+      if (scrollIndicator) scrollIndicator.classList.remove('hidden');
+      if (scrollProgressFill) scrollProgressFill.style.width = '0%';
+    } else {
+      // After pin zone - show last frame
+      if (heroPinned) {
+        heroPinned = false;
+        heroSection.classList.remove('hero-pinned');
+        document.body.style.overflow = '';
+      }
+      updateFrame(totalFrames - 1);
+      if (frontText) frontText.classList.add('fade-out');
+      if (scrollIndicator) scrollIndicator.classList.add('hidden');
+      if (scrollProgressFill) scrollProgressFill.style.width = '100%';
+    }
   }
 
-  // Mouse move handler for spotlight
+  // Mouse move handler for spotlight (desktop)
   function handleMouseMove(e) {
     const rect = container.getBoundingClientRect();
     mouseX = ((e.clientX - rect.left) / rect.width) * 100;
@@ -547,10 +602,18 @@ function initHeroAnimation() {
     // Update CSS custom properties for spotlight mask
     container.style.setProperty('--mouse-x', `${mouseX}%`);
     container.style.setProperty('--mouse-y', `${mouseY}%`);
+
+    // Activate color reveal on mouse move
+    colorLayer.classList.add('reveal-active');
   }
 
-  // Touch support for mobile
-  function handleTouchMove(e) {
+  // Mouse leave - fade out color reveal
+  function handleMouseLeave() {
+    colorLayer.classList.remove('reveal-active');
+  }
+
+  // Touch support for mobile - tap to reveal color at touch position
+  function handleTouchStart(e) {
     if (e.touches.length > 0) {
       const touch = e.touches[0];
       const rect = container.getBoundingClientRect();
@@ -558,35 +621,56 @@ function initHeroAnimation() {
       mouseY = ((touch.clientY - rect.top) / rect.height) * 100;
       container.style.setProperty('--mouse-x', `${mouseX}%`);
       container.style.setProperty('--mouse-y', `${mouseY}%`);
+      colorLayer.classList.add('reveal-active');
     }
   }
 
+  function handleTouchEnd() {
+    // On mobile, keep color revealed for a moment then fade
+    setTimeout(() => {
+      colorLayer.classList.remove('reveal-active');
+    }, 2000);
+  }
+
+  // Recalculate pin bounds on resize
+  let resizeTimeout;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimeout);
+    resizeTimeout = setTimeout(() => {
+      calculatePinBounds();
+      updateFrameFromScroll();
+    }, 100);
+  });
+
+  // Scroll handler - throttle for performance
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        updateFrameFromScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  // Initialize
+  calculatePinBounds();
+
   // Event listeners
-  container.addEventListener('mouseenter', startAnimation);
-  container.addEventListener('mouseleave', stopAnimation);
+  window.addEventListener('scroll', onScroll, { passive: true });
   container.addEventListener('mousemove', handleMouseMove);
-
-  // Touch events for mobile
-  container.addEventListener('touchstart', (e) => {
-    e.preventDefault();
-    startAnimation();
-    handleTouchMove(e);
-  }, { passive: false });
-
-  container.addEventListener('touchmove', handleTouchMove, { passive: true });
-  container.addEventListener('touchend', stopAnimation);
-
-  // Keyboard accessibility
-  container.addEventListener('focusin', startAnimation);
-  container.addEventListener('focusout', stopAnimation);
+  container.addEventListener('mouseleave', handleMouseLeave);
+  container.addEventListener('touchstart', handleTouchStart, { passive: true });
+  container.addEventListener('touchend', handleTouchEnd);
 
   // Respect prefers-reduced-motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
   if (prefersReducedMotion.matches) {
-    // Disable animation, just show first frame
     updateFrame(0);
     colorLayer.style.display = 'none';
     bwLayer.style.filter = 'grayscale(100%) contrast(1.1)';
+    if (scrollIndicator) scrollIndicator.style.display = 'none';
     return;
   }
 

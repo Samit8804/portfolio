@@ -482,7 +482,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
 .mobile-link:hover { color: var(--text-primary); background: var(--nav-active-bg); }
 .mobile-admin { margin-top: 16px; border-top: 1px solid var(--border-accent); padding-top: 20px; }
 
-/* ===== HERO — INTERACTIVE EDITORIAL ===== */
+/* ===== HERO — SCROLL-CONTROLLED CINEMATIC ANIMATION ===== */
 .hero-section {
   position: relative;
   z-index: 1;
@@ -521,6 +521,12 @@ input, textarea { font-family: inherit; font-size: inherit; }
   transform: translateZ(0) scale(1);
   transition: opacity 0.5s ease, transform 0.5s ease;
   will-change: opacity, transform;
+}
+
+/* Front text fades out based on scroll progress (via JS) */
+.hero-bg-type-front.fade-out {
+  opacity: 0;
+  transform: translateZ(0) scale(0.95);
 }
 
 /* ---- Theme accent bar ---- */
@@ -593,7 +599,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
   height: 100vh;
 }
 
-/* Frame Animation Container */
+/* Frame Animation Container - Pinned during scroll */
 .hero-frame-container {
   position: relative;
   width: 100%;
@@ -623,10 +629,11 @@ input, textarea { font-family: inherit; font-size: inherit; }
   will-change: transform, opacity;
 }
 
-/* Black & White Base Layer */
+/* Black & White Base Layer - Always visible */
 .hero-frame-bw {
   z-index: 1;
   filter: grayscale(100%) contrast(1.1);
+  opacity: 1;
 }
 
 /* Color Reveal Layer - Masked by cursor spotlight */
@@ -650,6 +657,7 @@ input, textarea { font-family: inherit; font-size: inherit; }
   -webkit-mask-mode: alpha;
   opacity: 0;
   transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
 .hero-frame-color.reveal-active {
@@ -680,13 +688,6 @@ input, textarea { font-family: inherit; font-size: inherit; }
   transition: opacity 0.5s ease;
   pointer-events: none;
   z-index: 0;
-}
-.hero-center:hover::before { opacity: 1; }
-
-/* Hover: front text recedes behind portrait */
-.hero-center:hover ~ .hero-bg-type-front {
-  opacity: 0;
-  transform: translateZ(0) scale(0.95);
 }
 
 /* Center-bottom actions */
@@ -725,7 +726,9 @@ input, textarea { font-family: inherit; font-size: inherit; }
   align-items: center;
   gap: 8px;
   opacity: 0.4;
+  transition: opacity 0.3s ease;
 }
+.hero-scroll-indicator.hidden { opacity: 0; pointer-events: none; }
 .hero-scroll-text {
   font-size: 0.5625rem;
   text-transform: uppercase;
@@ -744,10 +747,68 @@ input, textarea { font-family: inherit; font-size: inherit; }
   100% { transform: scaleY(1); transform-origin: top; opacity: 0; }
 }
 
+/* Scroll progress indicator (debug) */
+.hero-scroll-progress {
+  position: absolute;
+  bottom: 120px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.3;
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.scroll-progress-bar {
+  width: 160px;
+  height: 2px;
+  background: var(--border-accent);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.scroll-progress-fill {
+  height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 0%;
+  transition: width 0.1s linear;
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .hero-frame-img { transition: none !important; }
   .hero-frame-color { transition: none !important; }
+  .hero-bg-type-front { transition: none !important; }
+}
+
+/* ===== HERO PINNED STATE ===== */
+.hero-section.hero-pinned {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 100;
+  background: var(--bg);
+}
+
+.hero-section.hero-pinned .hero-center {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 101;
+}
+
+/* Ensure sections after hero have proper spacing when hero is pinned */
+.section.about-section {
+  margin-top: 100vh; /* Space for pinned hero */
 }
 
 /* ===== SECTION COMMONS ===== */
