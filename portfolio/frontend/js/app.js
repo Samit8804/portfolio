@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModals();
   initMagneticButtons();
   initParallax();
+  initHeroAnimation();
   loadProjects();
   loadCertificates();
 
@@ -460,3 +461,138 @@ function showToast(message, type = 'success') {
     setTimeout(() => toast.remove(), 300);
   }, 4000);
 }
+
+// ===== HERO ANIMATION & SPOTLIGHT =====
+function initHeroAnimation() {
+  const container = document.getElementById('heroFrameContainer');
+  const bwLayer = document.getElementById('heroFrameBW');
+  const colorLayer = document.getElementById('heroFrameColor');
+  const bwImg = document.getElementById('heroFrameImgBW');
+  const colorImg = document.getElementById('heroFrameImgColor');
+  const fallbackImg = document.getElementById('heroImage');
+  const heroCenter = document.getElementById('heroCenter');
+
+  if (!container || !bwLayer || !colorLayer) return;
+
+  // Frame sequence
+  const frames = [
+    'images/frame_001.jpg', 'images/frame_002.jpg', 'images/frame_003.jpg', 'images/frame_004.jpg',
+    'images/frame_005.jpg', 'images/frame_006.jpg', 'images/frame_007.jpg', 'images/frame_008.jpg',
+    'images/frame_009.jpg', 'images/frame_010.jpg', 'images/frame_011.jpg', 'images/frame_012.jpg',
+    'images/frame_013.jpg', 'images/frame_014.jpg', 'images/frame_015.jpg', 'images/frame_016.jpg'
+  ];
+
+  let currentFrame = 0;
+  let animationTimer = null;
+  let isAnimating = false;
+  let isHovering = false;
+  let mouseX = 50;
+  let mouseY = 50;
+
+  // Preload all frames
+  const preloadedImages = [];
+  frames.forEach(src => {
+    const img = new Image();
+    img.src = src;
+    preloadedImages.push(img);
+  });
+
+  // Update frame images
+  function updateFrame(frameIndex) {
+    if (frameIndex >= 0 && frameIndex < frames.length) {
+      bwImg.src = frames[frameIndex];
+      colorImg.src = frames[frameIndex];
+      currentFrame = frameIndex;
+    }
+  }
+
+  // Start frame animation
+  function startAnimation() {
+    if (isAnimating) return;
+    isAnimating = true;
+    isHovering = true;
+    colorLayer.classList.add('reveal-active');
+
+    // Animate through frames
+    animationTimer = setInterval(() => {
+      currentFrame = (currentFrame + 1) % frames.length;
+      updateFrame(currentFrame);
+    }, 120); // ~8.3 fps for smooth animation through 16 frames
+  }
+
+  // Stop frame animation, hold on last frame
+  function stopAnimation() {
+    isAnimating = false;
+    isHovering = false;
+    if (animationTimer) {
+      clearInterval(animationTimer);
+      animationTimer = null;
+    }
+    // Fade out color layer
+    colorLayer.classList.remove('reveal-active');
+    // Reset to first frame after a delay
+    setTimeout(() => {
+      if (!isHovering) {
+        updateFrame(0);
+      }
+    }, 1000);
+  }
+
+  // Mouse move handler for spotlight
+  function handleMouseMove(e) {
+    const rect = container.getBoundingClientRect();
+    mouseX = ((e.clientX - rect.left) / rect.width) * 100;
+    mouseY = ((e.clientY - rect.top) / rect.height) * 100;
+
+    // Update CSS custom properties for spotlight mask
+    container.style.setProperty('--mouse-x', `${mouseX}%`);
+    container.style.setProperty('--mouse-y', `${mouseY}%`);
+  }
+
+  // Touch support for mobile
+  function handleTouchMove(e) {
+    if (e.touches.length > 0) {
+      const touch = e.touches[0];
+      const rect = container.getBoundingClientRect();
+      mouseX = ((touch.clientX - rect.left) / rect.width) * 100;
+      mouseY = ((touch.clientY - rect.top) / rect.height) * 100;
+      container.style.setProperty('--mouse-x', `${mouseX}%`);
+      container.style.setProperty('--mouse-y', `${mouseY}%`);
+    }
+  }
+
+  // Event listeners
+  container.addEventListener('mouseenter', startAnimation);
+  container.addEventListener('mouseleave', stopAnimation);
+  container.addEventListener('mousemove', handleMouseMove);
+
+  // Touch events for mobile
+  container.addEventListener('touchstart', (e) => {
+    e.preventDefault();
+    startAnimation();
+    handleTouchMove(e);
+  }, { passive: false });
+
+  container.addEventListener('touchmove', handleTouchMove, { passive: true });
+  container.addEventListener('touchend', stopAnimation);
+
+  // Keyboard accessibility
+  container.addEventListener('focusin', startAnimation);
+  container.addEventListener('focusout', stopAnimation);
+
+  // Respect prefers-reduced-motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (prefersReducedMotion.matches) {
+    // Disable animation, just show first frame
+    updateFrame(0);
+    colorLayer.style.display = 'none';
+    bwLayer.style.filter = 'grayscale(100%) contrast(1.1)';
+    return;
+  }
+
+  // Initialize with first frame
+  updateFrame(0);
+}
+
+// Expose for potential external use
+window.initHeroAnimation = initHeroAnimation;

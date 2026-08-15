@@ -1,0 +1,6 @@
+
+> samit-portfolio@1.0.0 start
+> node backend/server.js
+
+Server running on http://localhost:5000
+MongoDB Connected: ac-93hpvs8-shard-00-00.oadxzgb.mongodb.net

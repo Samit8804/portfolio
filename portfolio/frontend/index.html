@@ -118,7 +118,19 @@
     </div>
 
     <div class="hero-center" id="heroCenter">
-      <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" class="hero-portrait-img" onerror="this.style.display='none';">
+      <!-- Frame Animation Container -->
+      <div class="hero-frame-container" id="heroFrameContainer">
+        <!-- Black & White Base Layer -->
+        <div class="hero-frame-layer hero-frame-bw" id="heroFrameBW">
+          <img src="images/frame_001.jpg" alt="" class="hero-frame-img" id="heroFrameImgBW">
+        </div>
+        <!-- Color Reveal Layer (Spotlight) -->
+        <div class="hero-frame-layer hero-frame-color" id="heroFrameColor">
+          <img src="images/frame_001.jpg" alt="" class="hero-frame-img" id="heroFrameImgColor">
+        </div>
+      </div>
+      <!-- Fallback static portrait -->
+      <img src="images/profile.png" alt="Samit Fartyal" id="heroImage" class="hero-portrait-img" style="display:none;" onerror="this.style.display='none';">
     </div>
 
     <!-- Front text layer (covers portrait in idle, fades on hover) -->
